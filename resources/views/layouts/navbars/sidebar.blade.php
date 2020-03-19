@@ -18,13 +18,13 @@
         </a>
       </li>
       <li class="nav-item {{ ($activePage == 'profile' || $activePage == 'user-management') ? ' active' : '' }}">
-        <a class="nav-link" data-toggle="collapse" href="#laravelExample" aria-expanded="true">
+        <a class="nav-link" data-toggle="collapse" href="#laravelExamples" aria-expanded="true">
           <i><img style="width:25px" src="{{ asset('material') }}/img/laravel.svg"></i>
           <p>{{ __('Admin Roles') }}
             <b class="caret"></b>
           </p>
         </a>
-        <div class="collapse show" id="laravelExample">
+        <div class="collapse show" id="laravelExamples">
           <ul class="nav">
             <li class="nav-item{{ $activePage == 'profile' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('profile.edit') }}">
@@ -41,12 +41,60 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item{{ (request()->segment(1)=='spaces') ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('spaces.index') }}">
-          <i class="material-icons">content_paste</i>
-            <p>{{ __('spaces') }}</p>
+      <li class="nav-item {{  (request()->segment(1)=='spaces') ? ' active' : '' }}">
+        <a class="nav-link" data-toggle="collapse" href="#spaceOptions" aria-expanded="true">
+          <i><img style="width:25px" src="{{ asset('material') }}/img/laravel.svg"></i>
+          <p>{{ __('Spaces') }}
+            <b class="caret"></b>
+          </p>
         </a>
+        <div class="collapse show" id="spaceOptions">
+          <ul class="nav">
+            <li class="nav-item{{ $activePage == 'spaces-create' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('spaces.create') }}">
+                <span class="sidebar-mini"> +SP </span>
+                <span class="sidebar-normal"> {{ __('Add Spaces') }} </span>
+              </a>
+            </li>
+            <li class="nav-item{{ (request()->segment(1)=='spaces' && request()->segment(0)=='index') ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('spaces.index') }}">
+                <span class="sidebar-mini"> UP </span>
+                <span class="sidebar-normal">{{ __('View Spaces') }} </span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
       </li>
+
+      <li class="nav-item {{  (request()->segment(1)=='records') ? ' active' : '' }}">
+        <a class="nav-link" data-toggle="collapse" href="#recordOptions" aria-expanded="true">
+          <i><img style="width:25px" src="{{ asset('material') }}/img/laravel.svg"></i>
+          <p>{{ __('Records') }}
+            <b class="caret"></b>
+          </p>
+        </a>
+        <div class="collapse show" id="recordOptions">
+          <ul class="nav">
+            <li class="nav-item{{(request()->segment(1)=='records') ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('records.create') }}">
+                <span class="sidebar-mini"> PV </span>
+                <span class="sidebar-normal"> {{ __('Park Vehicle') }} </span>
+              </a>
+            </li>
+            <li class="nav-item{{(request()->segment(1)=='records') ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('records.index') }}">
+                <span class="sidebar-mini"> VR </span>
+                <span class="sidebar-normal">{{ __('View all Records') }} </span>
+              </a>
+            </li>
+           
+
+          </ul>
+        </div>
+      </li>
+
+
 
       <li class="nav-item{{ (request()->segment(1)=='records') ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('records.index') }}">
@@ -55,7 +103,8 @@
         </a>
       </li>
 
-  
+ 
+    
     </ul>
   </div>
 </div>

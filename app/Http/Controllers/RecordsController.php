@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Record;
 class RecordsController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        $records= Record::withTrashed()->get();
+        $records= Record::all();
         $n=now();    
         return view('records.index')->with('records',$records)->with('n',$n);
     }
@@ -42,7 +42,7 @@ class RecordsController extends Controller
             'numeric'=>'required|integer',
             'alpha2'=>'alpha|max:1',
             'name'=>'required',
-            'space_id'=>'required',
+            'space_id'=>'required'
         ]);
 
 

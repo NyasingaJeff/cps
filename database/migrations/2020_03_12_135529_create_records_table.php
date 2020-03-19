@@ -22,7 +22,7 @@ class CreateRecordsTable extends Migration
             $table->integer('space_id')->unsigned();
             $table->integer('status');
             $table->timestamps();
-            $table->softdeletes();
+            $table->softDeletes();
             $table->foreign('space_id')->references('id')->on('spaces');
         });
     }

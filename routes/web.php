@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::resources([
 	'records'=> 'RecordsController',
-	'spaces'=>'SpacesController'
+	'spaces'=>'SpacesController',
+	'tasks'=>'TasksController'
 ]);
 

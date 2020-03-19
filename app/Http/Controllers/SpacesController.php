@@ -12,9 +12,23 @@ class SpacesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $spaces=Space::all();
-        return view('spaces.index')->with('spaces', $spaces);
+    {   
+        $reserved= 0 ;
+        $nonreserved = 0 ;
+        $spaces=Space::all()->groupBy('location');
+        foreach ($spaces as $location => $value) {
+            foreach ($value as $val) {
+                if ($val->status==0) {
+                    $reserved = $reserved + 1;
+                } elseif ($val->status==1) {
+                    $nonreserved == $nonreserved +  1;
+                }
+                
+            }
+        }
+        return view('spaces.index')->with('spaces',$spaces)->with('reserved', $reserved)->with('nonreserved',$nonreserved);
+
+        
     }
 
     /**
@@ -47,7 +61,7 @@ class SpacesController extends Controller
         $space = new Space;
         $space->location=$request->input('location');
         $space->price=$request->input('price');
-        $space->category=$request->input('cattegory');
+        $space->category=$request->input('category');
         $space->save();
         return redirect('spaces')->with('message','Space Added');
 
@@ -99,7 +113,7 @@ class SpacesController extends Controller
         $space = Space::find($id);
         $space->location=$request->input('location');
         $space->price=$request->input('price');
-        $space->category=$request->input('cattegory');
+        $space->category=$request->input('category');
         $space->save();
         return redirect('spaces')->with('message','Infomation Edited Succesfully');
     }

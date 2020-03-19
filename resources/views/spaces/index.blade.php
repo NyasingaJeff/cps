@@ -1,92 +1,123 @@
-@extends('layouts.app', ['page' => __('Parking Space Management'), 'pageSlug' => 'users'])
-
+@extends('layouts.app', ['activePage' => 'spaces', 'titlePage' => __('Space List')])
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card ">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-8">
-                            <h4 class="card-title">{{ __('Spaces') }}</h4>
-                        </div>
-                        <div class="col-4 text-right">
-                            <a href="{{ route('spaces.create') }}" class="btn btn-sm btn-primary">{{ __('New Space') }}</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    @include('alerts.success')
-
-                    @if(session()->has('message'))
-                        <div class="alert alert-success">
-                             {{ session()->get('message') }}
-                         </div>
-                    @endif
-
-                    <div class="">
-                        <table class="table tablesorter " id="">
+<div class="content">
+    <div class="container-fluid">
+                <div class="row">
+                    @foreach ($spaces as $key => $value )
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-header card-header-primary">
+                        <h4 class="card-title ">{{ $key}}</h4>
+                        <p class="card-category"> Non reserved Parking Spaces</p>
+                      </div>
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table">
                             <thead class=" text-primary">
-                                <th scope="col">{{ __('Space id ') }}</th>
-                                <th scope="col">{{ __('location') }}</th>
-                                <th scope="col">{{ __('Price') }}</th>
-                                <th scope="col">{{ __('status') }}</th>
-                               
-                                <th scope="col"></th>
+                              <th>
+                                ID
+                              </th>
+                              <th>
+                                Category
+                              </th>
+                              <th>
+                                Street
+                              </th>
+                              <th>
+                                Bookings
+                              </th>
+                              <th>
+                                Totals
+                              </th>
+                            </thead>
+                            <tbody>                            
+                              @foreach ($value as $val)
+                              
+                              @if ($val->status==0)
+                              <tr>
+                                <td>
+                                  {{$val->id}}
+                                </td>
+                                <td>
+                                  {{$val->category}}
+                                </td>
+                                <td>
+                                  Street
+                                </td>
+                                <td>
+                                  Count
+                                </td>
+                                {{-- //calculate --}}
+                                <td class="text-primary">
+                                  $36,738
+                                </td>
+                              </tr>
+                              @endif
+                            
+                              @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="card card-plain">
+                      <div class="card-header card-header-primary">
+                        <h4 class="card-title mt-0"> {{$key}}</h4>
+                        <p class="card-category"> These are the Reserved Spaces</p>
+                      </div>
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead class="">
+                              <th>
+                                ID
+                              </th>
+                              <th>
+                                Category
+                              </th>
+                              <th>
+                                Client
+                              </th>
+                              <th>
+                                Duration
+                              </th>
+                              <th>
+                                Amount due.
+                              </th>
                             </thead>
                             <tbody>
-                                @foreach ($spaces as $space)
-                                    @php
-                                    
-                                        $a=$space->status;
-                                        if ($a==1) {
-                                            $s='Free';
-                                        } elseif ($a==2) {
-                                            $s='Engaged';
-                                        }                                  
-                                            
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $space->id }}</td>
-                                       
-                                        <td>{{ $space->location }}</td>
-
-                                        <td>{{$space->price}}</td>
-
-                                        <td>{{$s}}</td>
-
-                                        <td class="text-right">
-                                            <div class="dropdown">
-                                                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                    
-                                                        <form action="{{ route('spaces.destroy', $space) }}" method="post">
-                                                            @csrf
-                                                            @method('delete')
-
-                                                            <a class="dropdown-item" href="{{ route('spaces.edit', $space) }}">{{ __('Edit') }}</a>
-                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this space?") }}') ? this.parentElement.submit() : ''">
-                                                                        {{ __('Delete') }}
-                                                            </button>
-                                                        </form>
-                                                   
-                                                </div>
-                                            </div>
-                                    </td>
-                                        
+                              @foreach ($value as $val)
+                                 @if ($val->status==1)
+                                 <tr>
+                                  <td>
+                                    {{$val->id}}
+                                  </td>
+                                  <td>
+                                    {{$val->category}}
+                                  </td>
+                                  <td>
+                                    {{$val->created_at}}
+                                  </td>
+                                  <td>
+                                    {{$val->price}}
+                                  </td>
+                                  <td class="text-primary">
+                                    $36,738
+                                  </td>
                                 </tr>
-                                @endforeach
+                                 @endif
+                              @endforeach
                             </tbody>
-                        </table>
+                          </table>
+                        </div>
+                      </div>
                     </div>
-                </div>
-                <div class="card-footer py-4">
-                    {{-- <nav class="d-flex justify-content-end" aria-label="...">
-                        {{ $users->links() }}
-                    </nav> --}}
-                </div>
-            </div>
-        </div>
+                  </div>
+                    @endforeach      
+
+                </div>        
     </div>
+</div>
 @endsection

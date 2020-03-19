@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Record extends Model
 {
-    use SotfDeletes;
+    //use SoftDeletes;
     public function space(){
        return $this->belongsTo('App\Space');
     }

@@ -1,44 +1,66 @@
-@extends('layouts.app', ['page' => __('New Space'), 'pageSlug' => ''])
+@extends('layouts.app', ['activePage' => 'space-management', 'titlePage' => __('Space Management')])
 
 @section('content')
-    <div class="container-fluid mt--7">
-        <div class="row">
-            <div class="col-xl-12 order-xl-1">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">{{ __('New Parking space') }}</h3>
-                            </div>
-                            <div class="col-4 text-right">
-                                <a href="{{ route('spaces.index') }}" class="btn btn-sm btn-primary">{{ __('Back') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" action="{{ route('spaces.store') }}" autocomplete="off">
-                            @csrf
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <form method="post" action="{{ route('spaces.store') }}" autocomplete="off" class="form-horizontal">
+            @csrf
+            @method('post')
 
-                            <h6 class="heading-small text-muted mb-4">{{ __('Fill Out The Fields below') }}</h6>
-                            <div class="pl-lg-4">
-                                <div class="form-group{{ $errors->has('location') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-location">{{ __('Location') }}</label>
-                                    <input type="text" name="location" id="input-name" class="form-control form-control-alternative{{ $errors->has('Location') ? ' is-invalid' : '' }}" placeholder="{{ __('location') }}" value="{{ old('name') }}" required autofocus>
-                                    @include('alerts.feedback', ['field' => 'no_plate'])
-                                </div>
-                                <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-price">{{ __('Price') }}</label>
-                                    <input type="text" name="price" id="input-price" class="form-control form-control-alternative{{ $errors->has('price') ? ' is-invalid' : '' }}" placeholder="{{ __('Price') }}" value="{{ old('email') }}" required>
-                                    @include('alerts.feedback', ['field' => 'name'])
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-success mt-4">{{ __('Register') }}</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+            <div class="card ">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title">{{ __('Add Space') }}</h4>
+                <p class="card-category"></p>
+              </div>
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-md-12 text-right">
+                      <a href="{{ route('spaces.index') }}" class="btn btn-sm btn-primary">{{ __('Back to list') }}</a>
+                  </div>
                 </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label">{{ __('Location') }}</label>
+                  <div class="col-sm-7">
+                    <div class="form-group{{ $errors->has('location') ? ' has-danger' : '' }}">
+                      <input class="form-control{{ $errors->has('location') ? ' is-invalid' : '' }}" name="location" id="input-location" type="text" placeholder="{{ __('location') }}" value="{{ old('location') }}" required="true" aria-required="true"/>
+                      @if ($errors->has('location'))
+                        <span id="location-error" class="error text-danger" for="input-location">{{ $errors->first('location') }}</span>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label">{{ __('Price') }}</label>
+                  <div class="col-sm-7">
+                    <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }}">
+                      <input class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" id="input-price" type="text" placeholder="{{ __('Price') }}" value="{{ old('price') }}" required />
+                      @if ($errors->has('price'))
+                        <span id="price-error" class="error text-danger" for="input-price">{{ $errors->first('price') }}</span>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label" for="input-category">{{ __(' category') }}</label>
+                  <div class="col-sm-7">
+                    <div class="form-group{{ $errors->has('category') ? ' has-danger' : '' }}">
+                      <input class="form-control{{ $errors->has('category') ? ' is-invalid' : '' }}" input type="text" name="category" id="input-category" placeholder="{{ __('category') }}" value="" required />
+                      @if ($errors->has('category'))
+                        <span id="name-error" class="error text-danger" for="input-name">{{ $errors->first('category') }}</span>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer ml-auto mr-auto">
+                <button type="submit" class="btn btn-primary">{{ __('Add Space') }}</button>
+              </div>
             </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 @endsection
