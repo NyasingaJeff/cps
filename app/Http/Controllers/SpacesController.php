@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 use App\Space;
@@ -13,20 +14,9 @@ class SpacesController extends Controller
      */
     public function index()
     {   
-        $reserved= 0 ;
-        $nonreserved = 0 ;
+       
         $spaces=Space::all()->groupBy('location');
-        foreach ($spaces as $location => $value) {
-            foreach ($value as $val) {
-                if ($val->status==0) {
-                    $reserved = $reserved + 1;
-                } elseif ($val->status==1) {
-                    $nonreserved == $nonreserved +  1;
-                }
-                
-            }
-        }
-        return view('spaces.index')->with('spaces',$spaces)->with('reserved', $reserved)->with('nonreserved',$nonreserved);
+        return view('spaces.index')->with('spaces',$spaces);
 
         
     }
@@ -51,17 +41,27 @@ class SpacesController extends Controller
     {
         $this->validate($request,[
             'location'=>'required|string',
+            'street'=>'required|string',
             'price'=>'required|integer',
             'category'=>'required|string'
             
         ]);
 
 
-
+        $x= Space::all();
+        $x= count($x);
         $space = new Space;
         $space->location=$request->input('location');
         $space->price=$request->input('price');
         $space->category=$request->input('category');
+        $space->street=$request->input('street');
+        //to automatically generate a unique identifier
+        $a= str_split($space->location,2);
+        $a= $a[0];
+        $b= str_split($space->street,2);
+        $b = $b[0];
+        $c=$x+1;
+        $space->st_id = $a.$b.$c; 
         $space->save();
         return redirect('spaces')->with('message','Space Added');
 

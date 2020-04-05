@@ -21,21 +21,31 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-2 col-form-label">{{ __('Number Plate Preffix') }}</label>
+                  <label class="col-sm-2 col-form-label">{{ __('Plate') }}</label>
                   <div class="col-sm-7">
-                    <div class="form-group{{ $errors->has('prefix') ? ' has-danger' : '' }}">
-                      <input class="form-control{{ $errors->has('preffix') ? ' is-invalid' : '' }}" name="preffix" id="input-name" type="text" placeholder="{{ __('KXX') }}" value="{{ old('') }}" required="true" aria-required="true"/>
-                      @if ($errors->has('preffix'))
-                        <span id="name-error" class="error text-danger" for="input-prefix">{{ $errors->first('preffix') }}</span>
+                  <div class="input-group">
+                    <input type="text" name="preffix" max="3" class="form-control" placeholder="KXX"/>
+                    @if ($errors->has('preffix'))
+                        <span id="email-error" class="error text-danger" for="input-numeric">{{ $errors->first('numeric') }}</span>
                       @endif
-                    </div>
+                    <span class="input-group-addon">--</span>
+                    <input type="text" name="numeric" max="3" class="form-control" placeholder="000"/>
+                    @if ($errors->has('numeric'))
+                        <span id="email-error" class="error text-danger" for="input-numeric">{{ $errors->first('numeric') }}</span>
+                      @endif
+                    <span class="input-group-addon">--</span>
+                    <input type="text" name="suffix" max="1" class="form-control" placeholder="X"/>
+                    @if ($errors->has('suffix'))
+                        <span id="email-error" class="error text-danger" for="input-numeric">{{ $errors->first('numeric') }}</span>
+                      @endif
+                  </div>
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-2 col-form-label">{{ __('Numeric') }}</label>
+                  <label class="col-sm-2 col-form-label">{{ __('Name') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('numeric') ? ' has-danger' : '' }}">
-                      <input class="form-control{{ $errors->has('numeric') ? ' is-invalid' : '' }}" name="numeric" id="input-numeric" type="text" placeholder="{{ __('000') }}" value="{{ old('') }}" required />
+                      <input class="form-control{{ $errors->has('Numeric ') ? ' is-invalid' : '' }}" name="name" id="input-numeric" type="text" placeholder="{{ __('name') }}" value="{{ old('') }}" required />
                       @if ($errors->has('numeric'))
                         <span id="email-error" class="error text-danger" for="input-numeric">{{ $errors->first('numeric') }}</span>
                       @endif
@@ -43,12 +53,12 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-2 col-form-label" for="input-suffix">{{ __(' suffix') }}</label>
+                  <label class="col-sm-2 col-form-label" for="input-space_id">{{ __(' Space Id ') }}</label>
                   <div class="col-sm-7">
-                    <div class="form-group{{ $errors->has('suffix') ? ' has-danger' : '' }}">
-                      <input class="form-control{{ $errors->has('suffix') ? ' is-invalid' : '' }}" input type="suffix" name="suffix" id="input-suffix" placeholder="{{ __('x') }}" value="" required />
-                      @if ($errors->has('suffix'))
-                        <span id="name-error" class="error text-danger" for="input-name">{{ $errors->first('suffix') }}</span>
+                    <div class="form-group{{ $errors->has('space_id') ? ' has-danger' : '' }}">
+                      <input class="form-control{{ $errors->has('space_id') ? ' is-invalid' : '' }}" input type="space_id" name="space_id" id="input-space_id" placeholder="{{ __('Nk1') }}" value="" required />
+                      @if ($errors->has('space_id'))
+                        <span id="name-error" class="error text-danger" for="input-name">{{ $errors->first('space_id') }}</span>
                       @endif
                     </div>
                   </div>
@@ -56,7 +66,7 @@
                
               </div>
               <div class="card-footer ml-auto mr-auto">
-                <button type="submit" class="btn btn-primary">{{ __('Add User') }}</button>
+                <button type="submit" class="btn btn-primary">{{ __('Submitt') }}</button>
               </div>
             </div>
           </form>

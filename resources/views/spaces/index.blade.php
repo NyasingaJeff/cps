@@ -1,13 +1,15 @@
 @extends('layouts.app', ['activePage' => 'spaces', 'titlePage' => __('Space List')])
+
 @section('content')
 <div class="content">
     <div class="container-fluid">
                 <div class="row">
                     @foreach ($spaces as $key => $value )
+                    <h3>{{$key}}</h3>
                   <div class="col-md-12">
                     <div class="card">
                       <div class="card-header card-header-primary">
-                        <h4 class="card-title ">{{ $key}}</h4>
+                        <h4 class="card-title ">Non Reserved</h4>
                         <p class="card-category"> Non reserved Parking Spaces</p>
                       </div>
                       <div class="card-body">
@@ -64,7 +66,7 @@
                   <div class="col-md-12">
                     <div class="card card-plain">
                       <div class="card-header card-header-primary">
-                        <h4 class="card-title mt-0"> {{$key}}</h4>
+                        <h4 class="card-title mt-0"> Reserved</h4>
                         <p class="card-category"> These are the Reserved Spaces</p>
                       </div>
                       <div class="card-body">
@@ -121,3 +123,4 @@
     </div>
 </div>
 @endsection
+

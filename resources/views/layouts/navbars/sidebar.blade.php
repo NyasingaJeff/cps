@@ -66,10 +66,35 @@
           </ul>
         </div>
       </li>
+      <li class="nav-item {{  (request()->segment(1)=='tasks') ? ' active' : '' }}">
+        <a class="nav-link" data-toggle="collapse" href="#taskOptions" aria-expanded="true">
+          <i><img style="width:25px" src="{{ asset('material') }}/img/laravel.svg"></i>
+          <p>{{ __('Requests') }}
+            <b class="caret"></b>
+          </p>
+        </a>
+        <div class="collapse show" id="taskOptions">
+          <ul class="nav">
+            <li class="nav-item{{ $activePage == 'tasks-create' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('tasks.create') }}">
+                <span class="sidebar-mini"> RT </span>
+                <span class="sidebar-normal"> {{ __('Request Tow') }} </span>
+              </a>
+            </li>
+            <li class="nav-item{{ (request()->segment(1)=='tasks' && request()->segment(0)=='index') ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('tasks.index') }}">
+                <span class="sidebar-mini"> VR </span>
+                <span class="sidebar-normal">{{ __('View Requests') }} </span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </li>
 
       <li class="nav-item {{  (request()->segment(1)=='records') ? ' active' : '' }}">
         <a class="nav-link" data-toggle="collapse" href="#recordOptions" aria-expanded="true">
-          <i><img style="width:25px" src="{{ asset('material') }}/img/laravel.svg"></i>
+        <i class="material-icons">content_paste</i>
           <p>{{ __('Records') }}
             <b class="caret"></b>
           </p>
@@ -93,6 +118,7 @@
           </ul>
         </div>
       </li>
+      
 
 
 

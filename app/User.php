@@ -40,4 +40,7 @@ class User extends Authenticatable
     public function record(){
         return $this->hasMany('App\Record');
     }
+    public function task(){
+        return $this->hasMany('App\Task');
+    }
 }

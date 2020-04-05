@@ -67,7 +67,7 @@
                                   @csrf
                                   @method('delete')
                               
-                                  <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('records.edit', $record) }}" data-original-title="" title="">
+                                  <a rel="tooltip" class="btn btn-success btn-link" href="{{ 'records/{record}/edit' }}" data-original-title="" title="">
                                     <i class="material-icons">edit</i>
                                     <div class="ripple-container"></div>
                                   </a>
@@ -76,12 +76,7 @@
                                       <div class="ripple-container"></div>
                                   </button>
                               </form>
-                           
-                              <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('record.edit') }}" data-original-title="" title="">
-                                <i class="material-icons">edit</i>
-                                <div class="ripple-container"></div>
-                              </a>
-                         
+                      
                           </td>
                         </tr>
                       @endforeach

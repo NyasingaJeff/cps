@@ -24,9 +24,20 @@
                   <label class="col-sm-2 col-form-label">{{ __('Location') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('location') ? ' has-danger' : '' }}">
-                      <input class="form-control{{ $errors->has('location') ? ' is-invalid' : '' }}" name="location" id="input-location" type="text" placeholder="{{ __('location') }}" value="{{ old('location') }}" required="true" aria-required="true"/>
+                      <input class="form-control{{ $errors->has('location') ? ' is-invalid' : '' }}" autocapitalize="characters" name="location" id="input-location" type="text" placeholder="{{ __('location') }}" value="{{ old('location') }}" required="true" aria-required="true"/>
                       @if ($errors->has('location'))
                         <span id="location-error" class="error text-danger" for="input-location">{{ $errors->first('location') }}</span>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label">{{ __('Street') }}</label>
+                  <div class="col-sm-7">
+                    <div class="form-group{{ $errors->has('street') ? ' has-danger' : '' }}">
+                      <input class="form-control{{ $errors->has('street') ? ' is-invalid' : '' }}"autocapitalize="characters" name="street" id="input-street" type="text" placeholder="{{ __('street') }}" value="{{ old('street') }}" required="true" aria-required="true"/>
+                      @if ($errors->has('street'))
+                        <span id="street-error" class="error text-danger" for="input-street">{{ $errors->first('street') }}</span>
                       @endif
                     </div>
                   </div>

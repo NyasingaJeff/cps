@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRoleidToUsers extends Migration
+class AddStreetToTableSpaces extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddRoleidToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('role_id')->default(3)->after('id');
+        Schema::table('spaces', function (Blueprint $table) {
+            $table->text('street')->after('location');
         });
     }
 
@@ -25,8 +25,9 @@ class AddRoleidToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role_id');
+        Schema::table('spaces', function (Blueprint $table) {
+            $table->dropColumn('street');
+
         });
     }
 }

@@ -38,9 +38,9 @@ class RecordsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'alpha'=>'required|max:3|alpha',
+            'preffix'=>'required|max:3|alpha',
             'numeric'=>'required|integer',
-            'alpha2'=>'alpha|max:1',
+            'suffix'=>'alpha|max:1',
             'name'=>'required',
             'space_id'=>'required'
         ]);
@@ -48,17 +48,19 @@ class RecordsController extends Controller
 
 
         $record = new Record;
-        $a= $request->input('alpha'); 
-        $a= str_split($a,1);
-        $a=collect($a);
-        $b=$request->input('numeric');
-        $b=collect($b);
-        $c=$request->input('alpha2');
-        $c=collect($c);
-        $plate=$a->concat($b)->concat($c);       
-        $record->no_plate=$plate;
+        $preffix= $request->input('preffix'); 
+        $numeric=$request->input('numeric');
+        $suffix=$request->input('suffix');   
+        $record->no_plate=$preffix.$numeric.$suffix;
         $record->name=$request->input('name');
-        $record->space_id=$request->input('space_id');
+        $i = str_split($request->input('space_id'));
+        $j=0;
+        while ($j <= 3) {
+            array_shift($i);
+            $j++;
+        }
+        $i=implode($i);
+        $record->space_id=$i;
         $record->save();
         return redirect('records')->with('message','Space Booked Succesfully');
     }

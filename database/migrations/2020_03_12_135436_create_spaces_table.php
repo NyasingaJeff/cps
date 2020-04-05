@@ -17,7 +17,7 @@ class CreateSpacesTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('location');
             $table->integer('price');
-            $table->integer('status');
+            $table->integer('status')->default(0);
             $table->string('category');
             $table->timestamps();
         });
