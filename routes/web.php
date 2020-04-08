@@ -61,3 +61,7 @@ Route::resources([
 	'tasks'=>'TasksController'
 ]);
 
+Route::match( ['put','patch'],'/records/{id}/clamp', 'RecordsController@clamp')->name('records.clamp');
+Route::put('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
+
+

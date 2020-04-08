@@ -38,15 +38,16 @@
                         {{ __('Name') }}
                       </th>
                       <th>
-                        {{ __('Phone Number') }}
+                        {{ __('Parked at') }}
                       </th>
-                      
-                      <th class="text-right">
-                        {{ __('Date') }}
+                      <th>
+                        {{ __('Town') }}
+                      </th>                     
+                     <th class="text-right">
+                        {{ __('Street') }}
                       </th>
-                      {{-- usse logic to extract the space location --}}
                       <th class="text-right">
-                        {{ __('Location') }}
+                        {{ __('Actions') }}
                       </th>
                     </thead>
                     <tbody>
@@ -61,23 +62,40 @@
                           <td>
                             {{ $record->created_at->format('Y-m-d H:i:s') }}
                           </td>
+                          <td >
+                            {{ $record->space->location}}
+                          </td>
+                          <td class="text-right">
+                            {{ $record->space->street}}
+                          </td>
                           <td class="td-actions text-right">
-                           
-                              <form action="{{ route('records.destroy', $record) }}" method="post">
+
+                            <div class="dropdown">
+                              <a class="btn btn-sm btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                 . . .
+                               </a>
+                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                             <form method="post" action="{{ route('records.clamp', $record) }}" autocomplete="off" class="form-horizontal">
+                                    @csrf
+                                     @method('put')
+                                     <a class="dropdown-item" href="{{ route('records.clamp', $record) }}">{{ __('Clamp') }}</a>
+
+                             </form>
+                                                                      
+                                                        
+                                <form action="{{ route('records.destroy', $record) }}" method="post">
                                   @csrf
                                   @method('delete')
-                              
-                                  <a rel="tooltip" class="btn btn-success btn-link" href="{{ 'records/{record}/edit' }}" data-original-title="" title="">
-                                    <i class="material-icons">edit</i>
-                                    <div class="ripple-container"></div>
-                                  </a>
-                                  <button type="button" class="btn btn-danger btn-link" data-original-title="" title="" onclick="confirm('{{ __("Are you sure you want to delete this record?") }}') ? this.parentElement.submit() : ''">
-                                      <i class="material-icons">close</i>
-                                      <div class="ripple-container"></div>
+                                  <a class="dropdown-item" href="{{ route('records.impound', $record) }}">{{ __('Impound') }}</a>
+                                  <a class="dropdown-item" href="{{ route('records.clamp', $record) }}">{{ __('Clamp') }}</a>
+                                  <a class="dropdown-item" href="{{ route('records.edit', $record) }}">{{ __('Edit') }}</a>
+                                  <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this record?") }}') ? this.parentElement.submit() : ''">
+                                  {{ __('Delete') }}
                                   </button>
-                              </form>
-                      
-                          </td>
+                                 </form>                                                                                                  
+                             </div>
+                        </div>                        
+                        </td>                       
                         </tr>
                       @endforeach
                     </tbody>

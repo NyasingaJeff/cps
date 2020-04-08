@@ -44,7 +44,7 @@
                                   {{$val->category}}
                                 </td>
                                 <td>
-                                  Street
+                                  {{$val->street}}
                                 </td>
                                 <td>
                                   Count

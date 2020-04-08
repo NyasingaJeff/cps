@@ -45,8 +45,8 @@
                   <label class="col-sm-2 col-form-label">{{ __('Name') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('numeric') ? ' has-danger' : '' }}">
-                      <input class="form-control{{ $errors->has('Numeric ') ? ' is-invalid' : '' }}" name="name" id="input-numeric" type="text" placeholder="{{ __('name') }}" value="{{ old('') }}" required />
-                      @if ($errors->has('numeric'))
+                      <input class="form-control{{ $errors->has('Numeric ') ? ' is-invalid' : '' }}" name="name" id="input-name" type="text" placeholder="{{ __('name') }}" value="{{ old('') }}" required />
+                      @if ($errors->has('name'))
                         <span id="email-error" class="error text-danger" for="input-numeric">{{ $errors->first('numeric') }}</span>
                       @endif
                     </div>

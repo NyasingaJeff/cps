@@ -13,9 +13,8 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        $records= Record::all();
-        $n=now();    
-        return view('records.index')->with('records',$records)->with('n',$n);
+        $records= Record::all();     
+        return view('records.index')->with('records',$records);
     }
 
     /**
@@ -39,7 +38,7 @@ class RecordsController extends Controller
     {
         $this->validate($request,[
             'preffix'=>'required|max:3|alpha',
-            'numeric'=>'required|integer',
+            'numeric'=>'required',
             'suffix'=>'alpha|max:1',
             'name'=>'required',
             'space_id'=>'required'
@@ -61,6 +60,9 @@ class RecordsController extends Controller
         }
         $i=implode($i);
         $record->space_id=$i;
+        // $$record = $record->flatMap(function ($values) {
+        //     return array_map('strtoupper', $values);
+        // });
         $record->save();
         return redirect('records')->with('message','Space Booked Succesfully');
     }
@@ -114,7 +116,48 @@ class RecordsController extends Controller
         return redirect('records')->with('message','record edited');
     }
 
-    /**
+    public function clamp(Request $request, $id)
+    {
+        $record = Record::find($id);
+        $record->status= 2 ;
+        $record->save();
+        return redirect('records')->with('message','Record edited');
+    }
+   
+    // The funnction is for imoounding cars
+    public function impound(Request $request)
+    {
+        $this->validate($request,[
+            'preffix'=>'required|max:3|alpha',
+            'numeric'=>'required',
+            'suffix'=>'alpha|max:1',
+            'name'=>'required',
+            'space_id'=>'required'
+        ]);
+
+
+
+        $record = new Record;
+        $preffix= $request->input('preffix'); 
+        $numeric=$request->input('numeric');
+        $suffix=$request->input('suffix');   
+        $record->no_plate=$preffix.$numeric.$suffix;
+        $record->name=$request->input('name');
+        $i = str_split($request->input('space_id'));
+        $j=0;
+        while ($j <= 3) {
+            array_shift($i);
+            $j++;
+        }
+        $i=implode($i);
+        $record->space_id=$i;
+        // $$record = $record->flatMap(function ($values) {
+        //     return array_map('strtoupper', $values);
+        // });
+        $record->save();
+        return redirect('records')->with('message','Space Booked Succesfully');
+    }
+     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -128,4 +171,5 @@ class RecordsController extends Controller
        
         return redirect('\records')->with('success','record deleted');
     }
+    
 }
