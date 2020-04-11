@@ -63,6 +63,7 @@
                       </div>
                     </div>
                   </div>
+                  @if($reservedcount != 0)
                   <div class="col-md-12">
                     <div class="card card-plain">
                       <div class="card-header card-header-primary">
@@ -117,6 +118,7 @@
                       </div>
                     </div>
                   </div>
+                  @endif
                     @endforeach      
 
                 </div>        

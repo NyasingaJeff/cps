@@ -5,6 +5,9 @@ use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 use App\Space;
+use Illuminate\Support\Facades\DB;
+
+
 class SpacesController extends Controller
 {
     /**
@@ -16,7 +19,11 @@ class SpacesController extends Controller
     {   
        
         $spaces=Space::all()->groupBy('location');
-        return view('spaces.index')->with('spaces',$spaces);
+                $reserved = DB:: table('spaces')
+                  ->where('status','=','1')
+                  ->get();
+                $reservedcount= count($reserved);
+        return view('spaces.index')->with('spaces',$spaces)->with('reservedcount',$reservedcount);
 
         
     }
@@ -38,7 +45,8 @@ class SpacesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {         
+        
         $this->validate($request,[
             'location'=>'required|string',
             'street'=>'required|string',
@@ -48,20 +56,34 @@ class SpacesController extends Controller
         ]);
 
 
-        $x= Space::all();
-        $x= count($x);
         $space = new Space;
         $space->location=$request->input('location');
         $space->price=$request->input('price');
         $space->category=$request->input('category');
         $space->street=$request->input('street');
+        
+        
         //to automatically generate a unique identifier
+
+        $streets = DB::table('spaces')
+                ->where('location','=', $space->location)
+                ->where('street','=',$space->street)
+                ->get();
+        $streetcount= count($streets);
+        $x = $streetcount + 1 ;   
         $a= str_split($space->location,2);
         $a= $a[0];
         $b= str_split($space->street,2);
         $b = $b[0];
-        $c=$x+1;
-        $space->st_id = $a.$b.$c; 
+        if ($streetcount <= 9) {
+            $space->st_id = $a.$b. '00'.$x; 
+        } elseif ($streetcount <= 99) {
+            $space->st_id = $a.$b.'0'.$x; 
+        } else {
+            $space->st_id = $a.$b.$x; 
+        }
+        
+    
         $space->save();
         return redirect('spaces')->with('message','Space Added');
 
