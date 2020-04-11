@@ -5,7 +5,7 @@
     <div class="container-fluid">
                 <div class="row">
                     @foreach ($spaces as $key => $value )
-                    <h3>{{$key}}</h3>
+                    <h3 class= text-center>{{$key}}</h3>
                   <div class="col-md-12">
                     <div class="card">
                       <div class="card-header card-header-primary">
@@ -31,6 +31,9 @@
                               <th>
                                 Totals
                               </th>
+                              <th class="text-right">
+                                Actions
+                              </th>
                             </thead>
                             <tbody>                            
                               @foreach ($value as $val)
@@ -53,6 +56,34 @@
                                 <td class="text-primary">
                                   $36,738
                                 </td>
+                             <td class="td-actions text-right">
+
+                            <div class="dropdown">
+                              <a class="btn btn-sm btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                 . . .
+                               </a>
+                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                             <form method="post" action="{{ route('spaces.edit', $val) }}" autocomplete="off" class="form-horizontal">
+                                    @csrf
+                                     @method('put')
+                                     <a class="dropdown-item" href="{{ route('clients.create', $val) }}">{{ __('Reserve') }}</a>
+
+
+                             </form>
+                                                                      
+                                                        
+                                <form action="{{ route('spaces.destroy', $val) }}" method="post">
+                                  @csrf
+                                  @method('delete')
+                                  <a class="dropdown-item" href="{{ route('spaces.edit', $val) }}">{{ __('Edit') }}</a>                               
+                                  
+                                  <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this space ?") }}') ? this.parentElement.submit() : ''">
+                                  {{ __('Delete') }}
+                                  </button>
+                                 </form>                                                                                                  
+                             </div>
+                        </div>                        
+                        </td> 
                               </tr>
                               @endif
                             
@@ -89,6 +120,9 @@
                               <th>
                                 Amount due.
                               </th>
+                              <th class="text-right">
+                                Actions
+                              </th>
                             </thead>
                             <tbody>
                               @foreach ($value as $val)
@@ -109,6 +143,31 @@
                                   <td class="text-primary">
                                     $36,738
                                   </td>
+
+                                   <td class="td-actions text-right">
+
+                                  <div class="dropdown">
+                                          <a class="btn btn-sm btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                             . . .
+                                           </a>
+                                      <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                        <form method="post" action="{{ route('spaces.edit', $key) }}" autocomplete="off" class="form-horizontal">
+                                              @csrf
+                                              @method('put')
+                <!-- find a way to unreserve.. this will destroy the client and unreserve the space -->
+                                            <a class="dropdown-item" href="{{ route('clients.create', $key) }}">{{ __('Unreserve') }}</a>
+                                         </form>                                                                             
+                                         <form action="{{ route('spaces.destroy', $key) }}" method="post">
+                                               @csrf
+                                               @method('delete')
+                                              <a class="dropdown-item" href="{{ route('spaces.edit', $key) }}">{{ __('Edit') }}</a>                               
+                                              <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this space ?") }}') ? this.parentElement.submit() : ''">
+                                             {{ __('Delete') }}
+                                             </button>
+                                        </form>                                                                                           
+                                      </div>
+                                  </div>                        
+                                  </td>                                
                                 </tr>
                                  @endif
                               @endforeach

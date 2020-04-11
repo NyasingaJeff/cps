@@ -58,7 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
 Route::resources([
 	'records'=> 'RecordsController',
 	'spaces'=>'SpacesController',
-	'tasks'=>'TasksController'
+	'tasks'=>'TasksController',
+	'clients'=>'ClientsController'
 ]);
 
 Route::match( ['put','patch'],'/records/{id}/clamp', 'RecordsController@clamp')->name('records.clamp');

@@ -1,48 +1,70 @@
-@extends('layouts.app', ['page' => __('Parking Spaces Management'), 'pageSlug' => 'spaces'])
+@extends('layouts.app', ['activePage' => 'space-management', 'titlePage' => __('Edit Spaces')])
 
 @section('content')
-    <div class="container-fluid mt--7">
-        <div class="row">
-            <div class="col-xl-12 order-xl-1">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">{{ __('Edit space information') }}</h3>
-                            </div>
-                            <div class="col-4 text-right">
-                                <a href="{{ route('spaces.index') }}" class="btn btn-sm btn-primary">{{ __('Back') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" action="{{ route('spaces.update', $space) }}" autocomplete="off">
-                            @csrf
-                            @method('put')
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <form method="post" action="{{ route('spaces.update',$space) }}" autocomplete="off" class="form-horizontal">
+            @csrf
+            @method('put')
 
-                            <h6 class="heading-small text-muted mb-4">{{ __('parking space information') }}</h6>
-                            <div class="pl-lg-4">
-                                <div class="form-group{{ $errors->has('space') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="location">{{ __('location') }}</label>
-                                    <input type="text" name="location" id="location" class="form-control form-control-alternative{{ $errors->has('location') ? ' is-invalid' : '' }}" placeholder="{{ old('location', $space->location)}}" value="{{ old('location', $space->location) }}" required autofocus>
-                                    @include('alerts.feedback', ['field' => 'location'])
-                                </div>
-                                <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-price">{{ __('price') }}</label>
-                                    <input type="text" name="price" id="input-price" class="form-control form-control-alternative{{ $errors->has('price') ? ' is-invalid' : '' }}" placeholder="{{ old('price', $space->price) }}" value="{{ old('price', $space->price) }}" required>
-                                    @include('alerts.feedback', ['field' => 'price'])
-                                </div>
-                               
-                               
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+            <div class="card ">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title">{{ __('Edit Detials') }}</h4>
+                <p class="card-category"></p>
+              </div>
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-md-12 text-right">
+                      <a href="{{ route('spaces.index') }}" class="btn btn-sm btn-primary">{{ __('Back to list') }}</a>
+                  </div>
                 </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label">{{ __('Location') }}</label>
+                  <div class="col-sm-7">
+                  <div class="form-group{{ $errors->has('location') ? ' has-danger' : '' }}">
+                       <input type="text" name="location" id="location" class="form-control form-control-alternative{{ $errors->has('location') ? ' is-invalid' : '' }}" placeholder="{{ old('location', $space->location)}}" value="{{ old('location', $space->location) }}" required autofocus>
+                                    
+                 </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label">{{ __('Street') }}</label>
+                  <div class="col-sm-7">
+                  <div class="form-group{{ $errors->has('street') ? ' has-danger' : '' }}">
+                       <input type="text" name="street" id="street" class="form-control form-control-alternative{{ $errors->has('street') ? ' is-invalid' : '' }}" placeholder="{{ old('street', $space->street)}}" value="{{ old('street', $space->street) }}" required autofocus>
+                                    
+                 </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label">{{ __('Price') }}</label>
+                  <div class="col-sm-7">
+                  <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }}">
+                    <input type="text" name="price" id="input-price" class="form-control form-control-alternative{{ $errors->has('price') ? ' is-invalid' : '' }}" placeholder="{{ old('price', $space->price) }}" value="{{ old('price', $space->price) }}" required>             
+                 </div> 
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label" for="input-category">{{ __(' category') }}</label>
+                  <div class="col-sm-7">
+                  <div class="form-group{{ $errors->has('category') ? ' has-danger' : '' }}">
+                       <input type="text" name="category" id="category" class="form-control form-control-alternative{{ $errors->has('category') ? ' is-invalid' : '' }}" placeholder="{{ old('category', $space->category)}}" value="{{ old('category', $space->category) }}" required autofocus>
+                                    
+                 </div> 
+                 <div class="text-center">
+                     <button type="submit" class="btn btn-success mt-4">{{ __('Submitt') }}</button>
+                 </div>
+                  </div>
+                </div>
+              </div>
+              
             </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 @endsection

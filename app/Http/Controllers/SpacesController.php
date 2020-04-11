@@ -109,8 +109,11 @@ class SpacesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {   
+
+       
         $space= Space::find($id);
+       
         return view('spaces.edit')->with('space', $space);
     }
 
@@ -122,20 +125,49 @@ class SpacesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+       
         $this->validate($request,[
             'location'=>'required|string',
             'price'=>'required|integer',
-            'category'=>'required|string'
+            'category'=>'required|string',
+            'street'=>'required|string',
             
         ]);
 
 
-
+        //first find the field to be edited
         $space = Space::find($id);
+        $oldspace = Space::find($id);
+        //to check if the user altered the prevous location information.. 
+                 
         $space->location=$request->input('location');
+        $space->street=$request->input('street');
+
+        if( $space->location == $oldspace->location  &&  $space->street == $oldspace->street)
+            {
+                $space->st_id = $a.$b.$x; 
+            } else {
+                $streets = DB::table('spaces')
+                ->where('location','=', $space->location)
+                ->where('street','=',$space->street)
+                ->get();
+            $streetcount= count($streets);
+            $x = $streetcount + 1 ;   
+            $a= str_split($space->location,2);
+            $a= $a[0];
+            $b= str_split($space->street,2);
+            $b = $b[0];
+            if ($streetcount <= 9) {
+             $space->st_id = $a.$b. '00'.$x; 
+            } elseif ($streetcount <= 99) {
+            $space->st_id = $a.$b.'0'.$x;
+        }
+
+         }
         $space->price=$request->input('price');
         $space->category=$request->input('category');
+
         $space->save();
         return redirect('spaces')->with('message','Infomation Edited Succesfully');
     }
