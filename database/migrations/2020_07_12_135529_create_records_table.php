@@ -24,6 +24,8 @@ class CreateRecordsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('space_id')->references('id')->on('spaces');
+            $table->foreign('no_plate')->references('no_plate')->on('clients');
+
         });
     }
 

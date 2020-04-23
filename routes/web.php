@@ -55,6 +55,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 });
 
+Route::any( '/records/{id}/clamp', 'RecordsController@clamp')->name('records.clamp');
+Route::any('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
+
+
+
+
 Route::resources([
 	'records'=> 'RecordsController',
 	'spaces'=>'SpacesController',
@@ -62,7 +68,5 @@ Route::resources([
 	'clients'=>'ClientsController'
 ]);
 
-Route::match( ['put','patch'],'/records/{id}/clamp', 'RecordsController@clamp')->name('records.clamp');
-Route::put('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
 
 

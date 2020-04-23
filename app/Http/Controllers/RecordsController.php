@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Record;
+use Illuminate\Support\Facades\DB;
+
 class RecordsController extends Controller
 {
     /**
@@ -41,29 +43,68 @@ class RecordsController extends Controller
             'numeric'=>'required',
             'suffix'=>'alpha|max:1',
             'name'=>'required',
-            'space_id'=>'required'
+            'space_id'=>'required',
+            'phone'=>'required'
         ]);
 
+        $preffix= $request->input('preffix'); 
+        $numeric=$request->input('numeric');
+        $suffix=$request->input('suffix');   
+        $no_plate=$preffix.$numeric.$suffix;
 
+        $i = DB::table('spaces')
+        ->where('st_id','=',$request->space_id)
+        ->get();
+        $space_id=$i[0]->id;
+        
+        //to Automatically add clients
+        $client = \App\clients::updateOrCreate(
+            ['no_plate' => $no_plate, 'name' => $request->input('name')],
+            ['phone' => $request->input('phone')]
+        );
+
+            
+        // $client = DB::table('clients')
+        //         ->where('no_plate','=',$no_plate)
+        //         ->get();
+        // if(is_null($client)){
+        //     $cl= new App\clients;
+        //     $cl->name=$request->input('name');
+        //     $cl->phone=$request->input('phone');
+        //     $cl->no_plate=$no_plate;
+        //     $cl->save();
+        //     $record=$cl->record()->create([
+        //         'no_plate'=>$request->input('no_plate'),
+        //         'name'=>$request->input('name'),
+        //         'phone'=>$request->input('phone'),
+        //         'space_id'=>$space_id
+               
+        //     ]);
+        // }else {
+        //     $record= $client->record()->create([
+        //         'no_plate'=>$request->input('no_plate'),
+        //         'name'=>$request->input('name'),
+        //         'phone'=>$request->input('phone'),
+        //         'space_id'=>$space_id
+        //     ]);
+        // }
+        
 
         $record = new Record;
         $preffix= $request->input('preffix'); 
         $numeric=$request->input('numeric');
         $suffix=$request->input('suffix');   
         $record->no_plate=$preffix.$numeric.$suffix;
+        $record->phone=$request->input('phone');   
         $record->name=$request->input('name');
-        $i = str_split($request->input('space_id'));
-        $j=0;
-        while ($j <= 3) {
-            array_shift($i);
-            $j++;
-        }
-        $i=implode($i);
-        $record->space_id=$i;
-        // $$record = $record->flatMap(function ($values) {
-        //     return array_map('strtoupper', $values);
-        // });
+       // to automatically get the exact location where the vehicle is at
+        $i = DB::table('spaces')
+            ->where('st_id','=',$request->space_id)
+            ->get();
+        $record->space_id=$space_id;
         $record->save();
+        
+      return $record->client;
         return redirect('records')->with('message','Space Booked Succesfully');
     }
 

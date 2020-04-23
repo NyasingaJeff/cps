@@ -14,11 +14,14 @@ class CreateTasksTable extends Migration
     public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
+            //delete a task after its done or change the status
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('phone');
             $table->text('location');
-            $table ->integer('status');
+            $table->text('destination');
+            $table->text('plate')->unique();
+            $table ->boolean('status');
             $table->timestamps();
         });
     }

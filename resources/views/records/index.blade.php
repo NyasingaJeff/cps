@@ -47,11 +47,20 @@
                         {{ __('Street') }}
                       </th>
                       <th class="text-right">
+                        {{ __('Spot Number') }}
+                      </th>
+                      <th class="text-right">
                         {{ __('Actions') }}
                       </th>
                     </thead>
                     <tbody>
                       @foreach($records as $record)
+                       @php
+                       $a= $record->space->st_id;
+                       $a= str_split($a , '4');
+                       
+                       @endphp
+                       
                         <tr>
                           <td>
                             {{ $record->no_plate }}
@@ -68,26 +77,23 @@
                           <td class="text-right">
                             {{ $record->space->street}}
                           </td>
+
+                          <td class="text-right">
+                            {{ $a[1]}}
+                          </td>
                           <td class="td-actions text-right">
 
                             <div class="dropdown">
                               <a class="btn btn-sm btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  . . .
                                </a>
-                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                             <form method="post" action="{{ route('records.clamp', $record) }}" autocomplete="off" class="form-horizontal">
-                                    @csrf
-                                     @method('put')
-                                     <a class="dropdown-item" href="{{ route('records.clamp', $record) }}">{{ __('Clamp') }}</a>
-
-                             </form>
-                                                                      
+                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">                                                                                          
                                                         
                                 <form action="{{ route('records.destroy', $record) }}" method="post">
                                   @csrf
                                   @method('delete')
-                                  <a class="dropdown-item" href="{{ route('records.impound', $record) }}">{{ __('Impound') }}</a>
                                   <a class="dropdown-item" href="{{ route('records.clamp', $record) }}">{{ __('Clamp') }}</a>
+                                  <a class="dropdown-item" href="{{ route('records.impound', $record) }}">{{ __('Impound') }}</a>
                                   <a class="dropdown-item" href="{{ route('records.edit', $record) }}">{{ __('Edit') }}</a>
                                   <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this record?") }}') ? this.parentElement.submit() : ''">
                                   {{ __('Delete') }}
