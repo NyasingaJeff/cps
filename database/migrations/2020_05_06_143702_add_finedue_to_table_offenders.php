@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPhoneToRecordsTable extends Migration
+class AddFinedueToTableOffenders extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddPhoneToRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::table('records', function (Blueprint $table) {
-            $table->integer('phone')->nullable()->after('name');
+        Schema::table('offenders', function (Blueprint $table) {
+            $table->text('fine_due')->after('offence');
         });
     }
 
@@ -25,8 +25,9 @@ class AddPhoneToRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::table('records', function (Blueprint $table) {
-            $table->dropColumn('phone');
+        Schema::table('offenders', function (Blueprint $table) {
+            $table->dropColumn('fine_due');
+
         });
     }
 }

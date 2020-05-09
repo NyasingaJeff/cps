@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTasksTable extends Migration
+class CreateOffendersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
-            //delete a task after its done or change the status
+        Schema::create('offenders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->integer('phone');
-            $table->text('location');
-            $table->text('destination');
             $table->string('no_plate');
-            $table ->boolean('status');
+            $table->string('location');      
+            $table->string('make')->nullable();
+            $table->string('model')->nullable();
+            $table->string('color')->nullable();
+            $table->string('offence');
+            $table->boolean('status');
             $table->timestamps();
-            $table->foreign('no_plate')->references('no_plate')->on('clients');
         });
     }
 
@@ -34,6 +33,6 @@ class CreateTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('offenders');
     }
 }

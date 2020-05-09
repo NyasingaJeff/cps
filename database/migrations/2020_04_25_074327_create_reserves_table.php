@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRecordsTable extends Migration
+class CreateReservesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records', function (Blueprint $table) {
+        Schema::create('reserves', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('no_plate');      
-            $table->string('name');
-            $table->integer('space_id')->unsigned();           
+            $table->integer('space_id')->unsigned();
+            $table->string('email');
+            $table->integer('duration');//in months
+            $table->string('organisation');
             $table->timestamps();
-            $table->softDeletes();
             $table->foreign('space_id')->references('id')->on('spaces');
-            $table->foreign('no_plate')->references('no_plate')->on('clients');
-
         });
     }
 
@@ -33,6 +31,6 @@ class CreateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('records');
+        Schema::dropIfExists('reserves');
     }
 }

@@ -38,10 +38,22 @@
                 <span class="sidebar-normal"> {{ __('User Management') }} </span>
               </a>
             </li>
+            <li class="nav-item{{ $activePage == 'crime-management' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('crimes.index') }}">
+                <span class="sidebar-mini"> CRM </span>
+                <span class="sidebar-normal"> {{ __('Punishable crimes') }} </span>
+              </a>
+            </li>
+            <li class="nav-item{{ $activePage == ('crime-create' )? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('crimes.create') }}">
+                <span class="sidebar-mini"> CRM </span>
+                <span class="sidebar-normal"> {{ __('Add new') }} </span>
+              </a>
+            </li>
           </ul>
         </div>
       </li>
-      <li class="nav-item {{  (request()->segment(1)=='spaces') ? ' active' : '' }}">
+      <li class="nav-item {{  ($activePage == 'space') ? ' active' : '' }}">
         <a class="nav-link" data-toggle="collapse" href="#spaceOptions" aria-expanded="true">
           <i><img style="width:25px" src="{{ asset('material') }}/img/laravel.svg"></i>
           <p>{{ __('Spaces') }}

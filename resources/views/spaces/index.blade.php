@@ -4,8 +4,9 @@
 <div class="content">
     <div class="container-fluid">
                 <div class="row">
-                    @foreach ($spaces as $key => $value )
-                    <h3 class= text-center>{{$key}}</h3>
+                    <!-- $key represents the towns that the spaces are located this loop is to iterate through all thhe locations  -->
+                    @foreach ($spaces as $town => $slots )
+                    <h3 class= text-center>{{$town}}</h3>
                   <div class="col-md-12">
                     <div class="card">
                       <div class="card-header card-header-primary">
@@ -36,46 +37,45 @@
                               </th>
                             </thead>
                             <tbody>                            
-                              @foreach ($value as $val)
+                              @foreach ($slots as $slot)
                               
-                              @if ($val->status==0)
+                              @if ($slot->status==0)
                               <tr>
                                 <td>
-                                  {{$val->id}}
+                                  {{$slot->id}}
                                 </td>
                                 <td>
-                                  {{$val->category}}
+                                  {{$slot->category}}
                                 </td>
                                 <td>
-                                  {{$val->street}}
+                                  {{$slot->street}}
                                 </td>
                                 <td>
-                                  Count
+                                  {{$count= $slot->record->count() }}
                                 </td>
-                                {{-- //calculate --}}
                                 <td class="text-primary">
-                                  $36,738
+                                  {{$count*$slot->price}}
                                 </td>
-                             <td class="td-actions text-right">
+                              <td class="td-actions text-right">
 
-                            <div class="dropdown">
-                              <a class="btn btn-sm btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 . . .
-                               </a>
-                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                             <form method="post" action="{{ route('spaces.edit', $val) }}" autocomplete="off" class="form-horizontal">
-                                    @csrf
-                                     @method('put')
-                                     <a class="dropdown-item" href="{{ route('clients.create', $val) }}">{{ __('Reserve') }}</a>
+                                  <div class="dropdown">
+                                  <a class="btn btn-sm btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      . . .
+                                  </a>
+                                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                      <form method="post" action="{{ route('spaces.edit', $slot) }}" autocomplete="off" class="form-horizontal">
+                                        @csrf
+                                        @method('put')
+                                        <a class="dropdown-item" href="{{ route('space.reserve', $slot) }}">{{ __('Reserve') }}</a>
 
 
-                             </form>
+                                      </form>
                                                                       
                                                         
-                                <form action="{{ route('spaces.destroy', $val) }}" method="post">
+                                <form action="{{ route('spaces.destroy', $slot) }}" method="post">
                                   @csrf
                                   @method('delete')
-                                  <a class="dropdown-item" href="{{ route('spaces.edit', $val) }}">{{ __('Edit') }}</a>                               
+                                  <a class="dropdown-item" href="{{ route('spaces.edit', $slot) }}">{{ __('Edit') }}</a>                               
                                   
                                   <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this space ?") }}') ? this.parentElement.submit() : ''">
                                   {{ __('Delete') }}
@@ -125,20 +125,20 @@
                               </th>
                             </thead>
                             <tbody>
-                              @foreach ($value as $val)
-                                 @if ($val->status==1)
+                              @foreach ($slots as $slot)
+                                 @if ($slot->status==1)
                                  <tr>
                                   <td>
-                                    {{$val->id}}
+                                    {{$slot->id}}
                                   </td>
                                   <td>
-                                    {{$val->category}}
+                                    {{$slot->category}}
                                   </td>
                                   <td>
-                                    {{$val->created_at}}
+                                    {{$slot->created_at}}
                                   </td>
                                   <td>
-                                    {{$val->price}}
+                                    {{$slot->price}}
                                   </td>
                                   <td class="text-primary">
                                     $36,738
@@ -151,16 +151,16 @@
                                              . . .
                                            </a>
                                       <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                        <form method="post" action="{{ route('spaces.edit', $key) }}" autocomplete="off" class="form-horizontal">
+                                        <form method="post" action="{{ route('spaces.edit', $town) }}" autocomplete="off" class="form-horizontal">
                                               @csrf
                                               @method('put')
                 <!-- find a way to unreserve.. this will destroy the client and unreserve the space -->
-                                            <a class="dropdown-item" href="{{ route('clients.create', $key) }}">{{ __('Unreserve') }}</a>
+                                            <a class="dropdown-item" href="{{ route('clients.create', $town) }}">{{ __('Unreserve') }}</a>
                                          </form>                                                                             
-                                         <form action="{{ route('spaces.destroy', $key) }}" method="post">
+                                         <form action="{{ route('spaces.destroy', $town) }}" method="post">
                                                @csrf
                                                @method('delete')
-                                              <a class="dropdown-item" href="{{ route('spaces.edit', $key) }}">{{ __('Edit') }}</a>                               
+                                              <a class="dropdown-item" href="{{ route('spaces.edit', $town) }}">{{ __('Edit') }}</a>                               
                                               <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this space ?") }}') ? this.parentElement.submit() : ''">
                                              {{ __('Delete') }}
                                              </button>

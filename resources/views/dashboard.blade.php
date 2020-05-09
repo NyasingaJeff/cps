@@ -12,7 +12,7 @@
               </div>
               <p class="card-category">Used Space</p>
               <h3 class="card-title">49/50
-                <small>GB</small>
+                <small>SLOTS</small>
               </h3>
             </div>
             <div class="card-footer">

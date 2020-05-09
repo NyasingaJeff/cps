@@ -57,7 +57,21 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::any( '/records/{id}/clamp', 'RecordsController@clamp')->name('records.clamp');
 Route::any('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
+Route::any('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
+Route::any('/spaces/{id}/reserve','SpacesController@reserve')->name('space.reserve');
+Route::any('reservation','SpacesController@reservation')->name('space.reservation');
+Route::any('/record/{id}/clamp','RecordsController@clamp')->name('records.clamp');
+Route::any('/record/{id}/impound','RecordsController@impound')->name('records.impound');
+Route::any('','RecordsController@offender')->name('records.offender');
+Route::any('reserves/create', function()
+{
+	return view('reserves.create');
+})->name('reserves.create');
 
+Route::any('pay', function()
+{
+	return view('records.pay');
+})->name('records.pay');
 
 
 
@@ -65,7 +79,9 @@ Route::resources([
 	'records'=> 'RecordsController',
 	'spaces'=>'SpacesController',
 	'tasks'=>'TasksController',
-	'clients'=>'ClientsController'
+	'clients'=>'ClientsController',
+	'crimes'=>'CrimesController'
+
 ]);
 
 

@@ -19,10 +19,12 @@ class SpacesController extends Controller
     {   
        
         $spaces=Space::all()->groupBy('location');
-                $reserved = DB:: table('spaces')
+        //to determine whether to load the reserved parking view
+        $reserved = DB:: table('spaces')
                   ->where('status','=','1')
                   ->get();
-                $reservedcount= count($reserved);
+        $reservedcount= count($reserved);
+    
         return view('spaces.index')->with('spaces',$spaces)->with('reservedcount',$reservedcount);
 
         
@@ -171,6 +173,36 @@ class SpacesController extends Controller
         $space->save();
         return redirect('spaces')->with('message','Infomation Edited Succesfully');
     }
+
+    public function reserve ($id)
+    {
+        $space= Space::find($id);
+        
+        return view('reserves.create')->with('space', $space);
+    }
+
+    public function reservation (Request $request){
+
+      
+        //to actually store the reservation information
+        DB::table('spaces')
+            ->where('st_id','=',$request->space_id)
+            ->update(['status' => 1]);
+        $reserved= DB::table('spaces')
+                    ->where('st_id','=',$request->space_id)
+                    ->get();         
+        
+        
+        $reservation = new \App\Reserve;
+        $reservation ->space_id= $reserved[0]->id;
+        $reservation ->email= $request->input('email');
+        $reservation ->organisation=$request->input('organisation');
+        $reservation ->duration= $request->input('duration');
+        $reservation->save();
+        return redirect('spaces')->with('message','Infomation Edited Succesfully');
+    }
+
+    
 
     /**
      * Remove the specified resource from storage.

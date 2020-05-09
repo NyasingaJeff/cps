@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Record;
+use App\Offender;
+
 use Illuminate\Support\Facades\DB;
 
 class RecordsController extends Controller
-{
+{       
+
+    
+
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +21,16 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        $records= Record::all();     
-        return view('records.index')->with('records',$records);
+        $records= Record::all();
+        
+        $offenders= \App\Offender::all();
+        // $clamps = DB::table('offenders')
+        //         ->where('status','=',0)
+        //         ->get();
+        // $impounds = DB::table('offenders')
+        //         ->where('status','=',1)
+        //         ->get();
+        return view('records.index')->with('records',$records)->with('offenders', $offenders);
     }
 
     /**
@@ -44,7 +58,7 @@ class RecordsController extends Controller
             'suffix'=>'alpha|max:1',
             'name'=>'required',
             'space_id'=>'required',
-            'phone'=>'required'
+            'phone'=>'required|max:12|min:10'
         ]);
 
         $preffix= $request->input('preffix'); 
@@ -97,14 +111,12 @@ class RecordsController extends Controller
         $record->no_plate=$preffix.$numeric.$suffix;
         $record->phone=$request->input('phone');   
         $record->name=$request->input('name');
-       // to automatically get the exact location where the vehicle is at
         $i = DB::table('spaces')
             ->where('st_id','=',$request->space_id)
             ->get();
         $record->space_id=$space_id;
         $record->save();
         
-      return $record->client;
         return redirect('records')->with('message','Space Booked Succesfully');
     }
 
@@ -157,47 +169,54 @@ class RecordsController extends Controller
         return redirect('records')->with('message','record edited');
     }
 
-    public function clamp(Request $request, $id)
-    {
-        $record = Record::find($id);
-        $record->status= 2 ;
-        $record->save();
-        return redirect('records')->with('message','Record edited');
+    // public function clamp(Request $request, $id)
+    // {
+    //     //add sms module, when clamped the owner gets alert... 
+    //     //on phone. kama hakuna namba kwa client list clamp kavu...//
+    //      //na iappend akikuja kulipa
+    //     $record = Record::find($id);
+    //     $record->status= 1 ;
+    //     $record->save();
+    //     return redirect('records')->with('message','Record edited');
+    // }
+        // this is to clamp a client that has parked unlawfully
+    public function clamp ($id)
+    {   
+        
+        $record= Record::find($id);
+        return view('offenders.create')->with('record', $record);
+    }
+
+    //now to record the offender
+    public function offender( Request $request){           
+        
+        $records= Record::all();
+        $offender = new \App\Offender;;
+        $offender->no_plate= $request->input('no_plate');
+        $town= $request->town;
+        $street=$request->street;
+        $slot=$request->slot_no;
+        $offender->location= $town.$street.$slot;
+        $offender->make= $request->input('make');
+        $offender->model= $request->input('model');
+        $offender->color= $request->input('color');
+        $offender->offence= $request->input('offence');
+        $offender->status=0;
+        $offender->save();
+        return redirect('records')->with('message','record edited')->with('records',$records);
+
+    }
+    public function impound ($id)
+    {   
+        
+        $offender= \App\Offender::find($id);
+        $offender->status =1;
+        $offender->save();
+        return redirect('records');
     }
    
     // The funnction is for imoounding cars
-    public function impound(Request $request)
-    {
-        $this->validate($request,[
-            'preffix'=>'required|max:3|alpha',
-            'numeric'=>'required',
-            'suffix'=>'alpha|max:1',
-            'name'=>'required',
-            'space_id'=>'required'
-        ]);
-
-
-
-        $record = new Record;
-        $preffix= $request->input('preffix'); 
-        $numeric=$request->input('numeric');
-        $suffix=$request->input('suffix');   
-        $record->no_plate=$preffix.$numeric.$suffix;
-        $record->name=$request->input('name');
-        $i = str_split($request->input('space_id'));
-        $j=0;
-        while ($j <= 3) {
-            array_shift($i);
-            $j++;
-        }
-        $i=implode($i);
-        $record->space_id=$i;
-        // $$record = $record->flatMap(function ($values) {
-        //     return array_map('strtoupper', $values);
-        // });
-        $record->save();
-        return redirect('records')->with('message','Space Booked Succesfully');
-    }
+   
      /**
      * Remove the specified resource from storage.
      *
