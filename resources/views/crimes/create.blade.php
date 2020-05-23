@@ -27,11 +27,22 @@
                   </div>
                 </div>
                 <div class="row">
+                  <label class="col-sm-2 col-form-label" for="input-description">{{ __(' Description ') }}</label>
+                  <div class="col-sm-7">
+                    <div class="form-group{{ $errors->has('description') ? ' has-danger' : '' }}">
+                      <input class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }} " input type="description" name="description" id="input-description" placeholder="{{ __('Describe briefly....') }}" value="" required />
+                      @if ($errors->has('description'))
+                        <span id="name-error" class="error text-danger" for="input-name">{{ $errors->first('description') }}</span>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <label class="col-sm-2 col-form-label" for="input-fine">{{ __(' Fine ') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('fine') ? ' has-danger' : '' }}">
                       <input class="form-control{{ $errors->has('fine') ? ' is-invalid' : '' }}" input type="fine" name="fine" id="input-fine" placeholder="{{ __('Fine....') }}" value="" required />
-                      @if ($errors->has('phone'))
+                      @if ($errors->has('fine'))
                         <span id="name-error" class="error text-danger" for="input-name">{{ $errors->first('fine') }}</span>
                       @endif
                     </div>

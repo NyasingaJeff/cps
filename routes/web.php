@@ -68,6 +68,7 @@ Route::any('reserves/create', function()
 	return view('reserves.create');
 })->name('reserves.create');
 
+Route::get('/spaces/{id}/pdf','SpacesController@export_pdf')->name('spaces.pdf');
 Route::any('pay', function()
 {
 	return view('records.pay');

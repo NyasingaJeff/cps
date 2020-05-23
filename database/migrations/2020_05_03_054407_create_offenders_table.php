@@ -20,9 +20,10 @@ class CreateOffendersTable extends Migration
             $table->string('make')->nullable();
             $table->string('model')->nullable();
             $table->string('color')->nullable();
-            $table->string('offence');
+            $table->integer('crime_id')->unsigned();
             $table->boolean('status');
             $table->timestamps();
+            $table->foreign('crime_id')->references('id')->on('crimes');
         });
     }
 

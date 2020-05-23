@@ -46,6 +46,7 @@ class CrimesController extends Controller
         $crime->name=$request->input('name');
         $crime->fine=$request->input('fine');
         $crime->save();
+        return redirect('crimes');
 
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCrimesTable extends Migration
+class AddDescriptionToCrimes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCrimesTable extends Migration
      */
     public function up()
     {
-        Schema::create('crimes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->integer('fine');
-            $table->timestamps();
+        Schema::table('crimes', function (Blueprint $table) {
+            $table->text('description')->after('name');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateCrimesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('crimes');
+        Schema::table('crimes', function (Blueprint $table) {
+            $table->dropColumn('description');
+        });
     }
 }

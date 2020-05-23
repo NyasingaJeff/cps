@@ -133,7 +133,7 @@
                         {{ __('CLamped') }}
                       </th>
                       <th>
-                        {{ __('Town-Street-Slot') }}
+                        {{ __('Crime') }}
                       </th>                     
                      <th class="text-right">
                         {{ __('Fine') }}
@@ -159,10 +159,10 @@
                             {{ $offender->updated_at->diffForHumans() }}
                           </td>
                           <td >
-                            {{ $offender->location}}
+                            {{ $offender->crime->name}}
                           </td>
                           <td class="text-right">
-                            {{ $offender->offence}}
+                            {{ $offender->fine_due}}
                           </td>
                           <td class="td-actions text-right">
 

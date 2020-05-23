@@ -21,15 +21,8 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        $records= Record::all();
-        
+        $records= Record::all();        
         $offenders= \App\Offender::all();
-        // $clamps = DB::table('offenders')
-        //         ->where('status','=',0)
-        //         ->get();
-        // $impounds = DB::table('offenders')
-        //         ->where('status','=',1)
-        //         ->get();
         return view('records.index')->with('records',$records)->with('offenders', $offenders);
     }
 
@@ -52,6 +45,7 @@ class RecordsController extends Controller
      */
     public function store(Request $request)
     {
+        //to validate the data  input by the user
         $this->validate($request,[
             'preffix'=>'required|max:3|alpha',
             'numeric'=>'required',
@@ -65,7 +59,9 @@ class RecordsController extends Controller
         $numeric=$request->input('numeric');
         $suffix=$request->input('suffix');   
         $no_plate=$preffix.$numeric.$suffix;
-
+       
+        
+        //to get the actual id from the  street alias input by the user
         $i = DB::table('spaces')
         ->where('st_id','=',$request->space_id)
         ->get();
@@ -75,35 +71,7 @@ class RecordsController extends Controller
         $client = \App\clients::updateOrCreate(
             ['no_plate' => $no_plate, 'name' => $request->input('name')],
             ['phone' => $request->input('phone')]
-        );
-
-            
-        // $client = DB::table('clients')
-        //         ->where('no_plate','=',$no_plate)
-        //         ->get();
-        // if(is_null($client)){
-        //     $cl= new App\clients;
-        //     $cl->name=$request->input('name');
-        //     $cl->phone=$request->input('phone');
-        //     $cl->no_plate=$no_plate;
-        //     $cl->save();
-        //     $record=$cl->record()->create([
-        //         'no_plate'=>$request->input('no_plate'),
-        //         'name'=>$request->input('name'),
-        //         'phone'=>$request->input('phone'),
-        //         'space_id'=>$space_id
-               
-        //     ]);
-        // }else {
-        //     $record= $client->record()->create([
-        //         'no_plate'=>$request->input('no_plate'),
-        //         'name'=>$request->input('name'),
-        //         'phone'=>$request->input('phone'),
-        //         'space_id'=>$space_id
-        //     ]);
-        // }
-        
-
+        );       
         $record = new Record;
         $preffix= $request->input('preffix'); 
         $numeric=$request->input('numeric');
@@ -116,6 +84,26 @@ class RecordsController extends Controller
             ->get();
         $record->space_id=$space_id;
         $record->save();
+
+        // Now to check if the parked vehicle has some outstanding charges 
+        // we first query the offenders table
+        $pending = DB::table('offenders')
+                    ->where('no_plate','=',$record->no_plate)
+                    ->get();
+        // isset() checks if the query above actually returned records
+        if (isset($pending)) {
+            $task = new \App\Task;
+            $task->name = $record->name;
+            $task->phone = $record->phone;
+            // we use the space-record, one to many relationship
+            $task->location = $record->space->location;
+            $task->destination = 'Not Applicable';
+            //A type two task will alert the parking attendant
+            $task->type = 2;
+            $task->no_plate = $record->no_plate;
+            $task->status = 0;
+            $task->save();
+        }
         
         return redirect('records')->with('message','Space Booked Succesfully');
     }
@@ -200,7 +188,33 @@ class RecordsController extends Controller
         $offender->make= $request->input('make');
         $offender->model= $request->input('model');
         $offender->color= $request->input('color');
-        $offender->offence= $request->input('offence');
+        $offender->crime_id= $request->input('crime_id');
+        //to check if the offender has any unpaid debts if so add it to the Fine the offender should pay.
+        $debts= DB::table('offenders')
+                        ->where('no_plate','=',$offender->no_plate)
+                        ->where('status','=',0)
+                        ->get();
+        //checking if the client has more than 2 strikes,, if so multiply the outstanding charges with 2
+        $strikes = count($debts);
+        $fine = \App\Crime::find($request->input('crime_id'));
+        $fine_due = $fine->fine;    
+        //if the offender has  more than three outsatanding crimes the system will automatically generate a record to indicate that.
+        if ($strikes >= 3) {
+            $outs= new \App\Offender;
+            $outs->no_plate= $request->input('no_plate');
+            $town= $request->town;
+            $street=$request->street;
+            $slot=$request->slot_no;
+            $outs->location= $town.$street.$slot;
+            $outs->make= $request->input('make');
+            $outs->model= $request->input('model');
+            $outs->color= $request->input('color');
+            $outs->crime_id=3;
+            $outs->fine_due= \App\Crime::find(3)->fine;
+            $outs->status=0;
+            $outs->save();
+        }
+        $offender->fine_due= $fine_due;
         $offender->status=0;
         $offender->save();
         return redirect('records')->with('message','record edited')->with('records',$records);
@@ -233,3 +247,4 @@ class RecordsController extends Controller
     }
     
 }
+    

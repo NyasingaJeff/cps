@@ -14,7 +14,7 @@ class AddFinedueToTableOffenders extends Migration
     public function up()
     {
         Schema::table('offenders', function (Blueprint $table) {
-            $table->text('fine_due')->after('offence');
+            $table->text('fine_due')->after('crime_id');
         });
     }
 

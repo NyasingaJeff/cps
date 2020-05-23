@@ -101,7 +101,16 @@ class SpacesController extends Controller
     {
         //will add the fact the fxnality to view all the records tagged to this specific space
         $space= Space::find($id);
-        return view('spaces.show')->with('space',$space);
+        $records= $space->record;
+        $count= count($records);
+        return view('spaces.show')->with('space',$space)->with('records',$records)->with('count',$count);
+    }
+    public function export_pdf($id){
+       $space = Space::find($id);
+       $records = $space->record;
+       
+       $pdf = \PDF::loadView('spaces.report',compact('space'));
+       return $pdf->download('report.pdf');
     }
 
     /**

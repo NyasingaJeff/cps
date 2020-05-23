@@ -76,7 +76,7 @@
                                   @csrf
                                   @method('delete')
                                   <a class="dropdown-item" href="{{ route('spaces.edit', $slot) }}">{{ __('Edit') }}</a>                               
-                                  
+                                  <a class="dropdown-item" href="{{ route('spaces.show', $slot) }}">{{ __('View') }}</a>                               
                                   <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this space ?") }}') ? this.parentElement.submit() : ''">
                                   {{ __('Delete') }}
                                   </button>

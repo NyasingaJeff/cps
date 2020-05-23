@@ -92,7 +92,7 @@
                   <label class="col-sm-2 col-form-label" for="input-password-confirmation">{{ __('Offence') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <input class="form-control" name="offence" id="input-offence" type="text" placeholder="{{ __('Offence') }}" required />
+                      <input class="form-control" name="crime_id" id="input-offence" type="text" placeholder="{{ __('Offence') }}" required />
                     </div>
                   </div>
                 </div>
