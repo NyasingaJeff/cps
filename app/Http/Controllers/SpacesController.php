@@ -110,7 +110,7 @@ class SpacesController extends Controller
        $records = $space->record;
        
        $pdf = \PDF::loadView('spaces.report',compact('space'));
-       return $pdf->download('report.pdf');
+       return $pdf->download($space->st_id.'.pdf');
     }
 
     /**
@@ -208,7 +208,7 @@ class SpacesController extends Controller
         $reservation ->organisation=$request->input('organisation');
         $reservation ->duration= $request->input('duration');
         $reservation->save();
-        return redirect('spaces')->with('message','Infomation Edited Succesfully');
+        return redirect('spaces')->with('message','Infomation Entered Succesfully');
     }
 
     

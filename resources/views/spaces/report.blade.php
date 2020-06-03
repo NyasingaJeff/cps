@@ -19,7 +19,21 @@ $abreviation = $abreviation[1]
     <div class="table-responsive">
               <table class="table table-hover">
                 <thead class="">
-                  <th>
+                 
+                </thead>
+                <tbody>
+               
+                </tbody>
+              </table>
+            </div>
+            <div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100">
+					<table>
+						<thead>
+							<tr class="table100-head">
+              <th>
                     Plate
                   </th>
                   <th>
@@ -28,9 +42,10 @@ $abreviation = $abreviation[1]
                   <th>
                     Parking Time
                   </th>
-                </thead>
-                <tbody>
-                @foreach ($space->record as $record)
+							</tr>
+						</thead>
+						<tbody>
+            @foreach ($space->record as $record)
                   <tr>
                     <td>
                     {{$record->no_plate}}
@@ -42,9 +57,14 @@ $abreviation = $abreviation[1]
                     {{$record->created_at->diffForHumans()}}
                     </td>                    
                   </tr>
-                @endforeach 
-                </tbody>
-              </table>
-            </div>
+           @endforeach 
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
+

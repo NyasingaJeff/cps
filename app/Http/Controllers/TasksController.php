@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use DB;
 
 class TasksController extends Controller
 {
@@ -14,7 +15,8 @@ class TasksController extends Controller
          * @return \Illuminate\Http\Response
          */
         public function index()
-        {
+        {   
+        
             $tasks= Task::all();
             return view('tasks.index')->with('tasks',$tasks);
         }
@@ -28,6 +30,7 @@ class TasksController extends Controller
         {
             return view('tasks.create');
         }
+
     
         /**
          * Store a newly created resource in storage.
@@ -43,11 +46,39 @@ class TasksController extends Controller
                 'location'=>'required'
                 
             ]);
+            // To check if the Car is at a slot
+            $locate = DB::table('spaces')
+                        ->where('st_id','=',$request->input('location'))
+                        ->get();
+           
+            if($locate->isNotEmpty()){
+                $town = $locate[0]->location;
+                $street= $locate[0] ->street;
+                $slot = str_split($locate[0]->st_id,4);
+                $slot = $slot[1];
+                $actuallocation= $town.' '.'town'.' '.$street.' '.'street,'.' '.'slot number'.' '.$slot;
+            }else {
+                $actuallocation= $request->input('location');
+            }
+            $plate =$request->input('preffix').$request->input('numeric').$request->input('suffix');
+            //to chek if the client details had already been recorded if not Record it,
+                
+            $client = \App\clients::updateOrCreate(
+                    ['no_plate' => $plate],
+                    [ 'name' => $request->input('name'),'phone' => $request->input('phone'),'email'=>$request->input('email')]
+                );
             
+   
+            //This is the one generated when a guest log in... must find a user generated.... when c;<amped class=""></amped>
             $task= new Task;
+            $task->no_plate =  $plate;
             $task->name= $request->input('name');
-            $task->location= $request->input('location');
+            $task->location = $actuallocation;
+            $task->destination = $request->input('destination');
             $task->phone= $request->input('phone');
+            $task->status=0;
+            $task->type=2;
+            $task->token=$request->session()->get('_token');
             $task->save();
             // will introduce auth that would redirect the different users to their deffault pages
             return redirect('tasks')->with('success','Your Request has been successfully submitted');
@@ -102,6 +133,16 @@ class TasksController extends Controller
             $task->save();
             return redirect('tasks')->with('success', 'Task updated');
             
+        }
+
+        
+        // This is to change the status of the task to be done. 
+        public function do($id)
+        {
+            $task =Task::find($id);
+            $task->status = 1;
+            $task->save();
+            return redirect('tasks');
         }
     
         /**

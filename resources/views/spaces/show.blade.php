@@ -7,7 +7,10 @@
           <div class="card-header card-header-primary">
             <h4 class="card-title mt-0"> Records From {{$space->location}}, {{$space->street}} Street </h4>
             <p class="card-category">Displaying the {{$count}} records</p>            
-           <a class="dropdown-item" href="{{ route('spaces.pdf', $space) }}">{{ __('print') }}</a>
+          </div>
+          <div class="col-md-12 text-right">
+            <h3>Totals:KSH {{$count*$space->price}}</h3>
+            <a href="{{ route('spaces.pdf', $space) }}" class="btn btn-sm btn-primary">{{ __('print') }}</a>
           </div>
           <div class="card-body">
             <div class="table-responsive">

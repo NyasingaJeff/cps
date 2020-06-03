@@ -61,7 +61,21 @@
                     </div>
                   </div>
                 </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label" for="role">{{ __('Role') }}</label>
+                  <div class="col-sm-7">
+                    <div class="form-group">
+                    <input type="radio" id="admin" name="role" value="admin">
+                      <label for="male">Admin</label><br>
+                      <input type="radio" id="attendant" name="role" value="attendant">
+                      <label for="female">Attendant</label><br>
+                      <input type="radio" id="tower" name="role" value="tower">
+                      <label for="other">Tower</label>
+                    </div>
+                  </div>
+                </div>
               </div>
+             
               <div class="card-footer ml-auto mr-auto">
                 <button type="submit" class="btn btn-primary">{{ __('Add User') }}</button>
               </div>

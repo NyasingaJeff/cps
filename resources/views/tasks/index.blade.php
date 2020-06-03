@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'record-management', 'titlePage' => __('Records Management')])
+@extends('layouts.app', ['activePage' => 'task-management', 'titlePage' => __('Task Management')])
 
 @section('content')
   <div class="content">
@@ -7,8 +7,8 @@
         <div class="col-md-12">
             <div class="card">
               <div class="card-header card-header-primary">
-                <h4 class="card-title ">{{ __('Request Tow') }}</h4>
-                <p class="card-category"> {{ __('Enter details') }}</p>
+                <h4 class="card-title ">{{ __('Submitted Towing Requests') }}</h4>
+                <p class="card-category">{{'Displaying'}} {{$tasks->count() }} {{'Records'}}</p>
               </div>
               <div class="card-body">
                 @if (session('status'))
@@ -22,7 +22,7 @@
                       </div>
                     </div>
                   </div>
-                @endif
+                @endif'
                 <div class="row">
                   <div class="col-12 text-right">
                     <a href="{{ route('tasks.create') }}" class="btn btn-sm btn-primary">{{ __('Request') }}</a>
@@ -38,65 +38,62 @@
                         {{ __('Name') }}
                       </th>
                       <th>
-                        {{ __('Parked at') }}
+                        {{ __('Location') }}
                       </th>
                       <th>
-                        {{ __('Town') }}
+                        {{ __('Destination') }}
                       </th>                     
-                     <th class="text-right">
-                        {{ __('Street') }}
-                      </th>
                       <th class="text-right">
                         {{ __('Actions') }}
                       </th>
                     </thead>
                     <tbody>
-                      @foreach($records as $record)
+                      @foreach($tasks as $task)
+                    
+                       <!-- @if($task->type=2) -->
+                      
                         <tr>
                           <td>
-                            {{ $record->no_plate }}
+                            {{ $task->no_plate }}
                           </td>
                           <td>
-                            {{ $record->name }}
+                          @php
+                            if (isset($task->client->name)){
+                              $name = $task->client->name;
+                            }else{
+                              $name = 'Not Set';
+                            }
+                          @endphp
+                            {{ $name}}
                           </td>
                           <td>
-                            {{ $record->created_at->format('Y-m-d H:i:s') }}
+                            {{ $task->location }}
                           </td>
                           <td >
-                            {{ $record->space->location}}
-                          </td>
-                          <td class="text-right">
-                            {{ $record->space->street}}
+                            {{ $task->destination}}
                           </td>
                           <td class="td-actions text-right">
 
-                            <div class="dropdown">
+                          <div class="dropdown">
                               <a class="btn btn-sm btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  . . .
                                </a>
-                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                             <form method="post" action="{{ route('records.clamp', $record) }}" autocomplete="off" class="form-horizontal">
-                                    @csrf
-                                     @method('put')
-                                     <a class="dropdown-item" href="{{ route('records.clamp', $record) }}">{{ __('Clamp') }}</a>
-
-                             </form>
-                                                                      
+                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">                                                                                          
                                                         
-                                <form action="{{ route('records.destroy', $record) }}" method="post">
+                                <form action="{{ route('tasks.destroy', $task) }}" method="post">
                                   @csrf
                                   @method('delete')
-                                  <a class="dropdown-item" href="{{ route('records.impound', $record) }}">{{ __('Impound') }}</a>
-                                  <a class="dropdown-item" href="{{ route('records.clamp', $record) }}">{{ __('Clamp') }}</a>
-                                  <a class="dropdown-item" href="{{ route('records.edit', $record) }}">{{ __('Edit') }}</a>
-                                  <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this record?") }}') ? this.parentElement.submit() : ''">
+                                  <a class="dropdown-item" href="{{ route('tasks.do', $task) }}">{{ __('Pick') }}</a>
+                                  <a class="dropdown-item" href="{{ route('tasks.edit', $task) }}">{{ __('Edit') }}</a>
+                                  <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this Task?") }}') ? this.parentElement.submit() : ''">
                                   {{ __('Delete') }}
                                   </button>
                                  </form>                                                                                                  
                              </div>
-                        </div>                        
+                        </div>                           
                         </td>                       
                         </tr>
+                        <!-- @endif -->
                       @endforeach
                     </tbody>
                   </table>

@@ -69,8 +69,8 @@ class RecordsController extends Controller
         
         //to Automatically add clients
         $client = \App\clients::updateOrCreate(
-            ['no_plate' => $no_plate, 'name' => $request->input('name')],
-            ['phone' => $request->input('phone')]
+            ['no_plate' => $no_plate],
+            [ 'name' => $request->input('name'),'phone' => $request->input('phone')]
         );       
         $record = new Record;
         $preffix= $request->input('preffix'); 
@@ -197,6 +197,7 @@ class RecordsController extends Controller
         //checking if the client has more than 2 strikes,, if so multiply the outstanding charges with 2
         $strikes = count($debts);
         $fine = \App\Crime::find($request->input('crime_id'));
+        
         $fine_due = $fine->fine;    
         //if the offender has  more than three outsatanding crimes the system will automatically generate a record to indicate that.
         if ($strikes >= 3) {

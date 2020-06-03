@@ -125,6 +125,12 @@
                 <span class="sidebar-normal">{{ __('View all Records') }} </span>
               </a>
             </li>
+            <li class="nav-item{{(request()->segment(1)=='clients') ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('clients.index') }}">
+                <span class="sidebar-mini"> VC </span>
+                <span class="sidebar-normal">{{ __('View all Clients') }} </span>
+              </a>
+            </li>
            
 
           </ul>

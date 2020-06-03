@@ -43,6 +43,19 @@
                   </div>
                 </div>
                 <div class="row">
+                  <label class="col-sm-2 col-form-label" for="role">{{ __('Role') }}</label>
+                  <div class="col-sm-7">
+                    <div class="form-group">
+                    <input type="radio" id="admin" name="role" value="admin">
+                      <label for="male">Admin</label>
+                      <input type="radio" id="attendant" name="role" value="attendant">
+                      <label for="female">Attendant</label>
+                      <input type="radio" id="tower" name="role" value="tower">
+                      <label for="other">Tower</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <label class="col-sm-2 col-form-label" for="input-password">{{ __(' Password') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">

@@ -73,15 +73,20 @@ Route::any('pay', function()
 {
 	return view('records.pay');
 })->name('records.pay');
+Route::get('/tasks/{id}/do','TasksController@do')->name('tasks.do');
 
-
-
+Route::get('client/{id}/report', 'ClientsController@export_pdf')->name('client.pdf');
+Route::get('client/{id}/chargesheet', 'ClientsController@chargesheet_export_pdf')->name('chargesheet.pdf');
+Route::post('rolespermissions/store','RolesAndPermissionsController@store')->name('rolespermission.store');
+Route::get('rolesandpermissions','RolesAndPermissionsController@index')->name('rolespermission.index');
+Route::get('rolesandpermissions/create','RolesAndPermissionsController@create')->name('rolespermission.create');
 Route::resources([
 	'records'=> 'RecordsController',
 	'spaces'=>'SpacesController',
 	'tasks'=>'TasksController',
 	'clients'=>'ClientsController',
 	'crimes'=>'CrimesController'
+	
 
 ]);
 
