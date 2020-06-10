@@ -67,7 +67,7 @@ Route::any('reserves/create', function()
 {
 	return view('reserves.create');
 })->name('reserves.create');
-
+Route::post('search', 'SearchesController@search')->name('search');
 Route::get('/spaces/{id}/pdf','SpacesController@export_pdf')->name('spaces.pdf');
 Route::any('pay', function()
 {
@@ -80,6 +80,9 @@ Route::get('client/{id}/chargesheet', 'ClientsController@chargesheet_export_pdf'
 Route::post('rolespermissions/store','RolesAndPermissionsController@store')->name('rolespermission.store');
 Route::get('rolesandpermissions','RolesAndPermissionsController@index')->name('rolespermission.index');
 Route::get('rolesandpermissions/create','RolesAndPermissionsController@create')->name('rolespermission.create');
+Route::any('reserves/{id}/edit','ReservesController@edit')->name('reserve.edit');
+Route::any('reserves/{id}/update','ReservesController@update')->name('reserve.update');
+Route::any('reserves/{id}/delete','ReservesController@destroy')->name('unreserve');
 Route::resources([
 	'records'=> 'RecordsController',
 	'spaces'=>'SpacesController',

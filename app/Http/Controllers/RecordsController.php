@@ -96,10 +96,12 @@ class RecordsController extends Controller
             $task->name = $record->name;
             $task->phone = $record->phone;
             // we use the space-record, one to many relationship
-            $task->location = $record->space->location;
-            $task->destination = 'Not Applicable';
+            $slot = ($request->input('space_id'));
+            $slot=str_split($slot, 4);
+            $task->location = $record->space->location.','.$record->space->street.'street , Slot:'.$slot[1];
+            $task->destination = 'Impound!';
             //A type two task will alert the parking attendant
-            $task->type = 2;
+            $task->type = 1;
             $task->no_plate = $record->no_plate;
             $task->status = 0;
             $task->save();
@@ -128,8 +130,10 @@ class RecordsController extends Controller
      */
     public function edit($id)
     {
-        $record= Record::find($id);
-        return view('records.edit')->with('record',$record);
+        $record= Record::find($id);        
+        $plate = str_split($record->no_plate, 3);
+        $st_id= $record->space->st_id;   
+        return view('records.edit')->with('record',$record)->with('plate', $plate)->with('st_id', $st_id);
     }
 
     /**
@@ -140,21 +144,27 @@ class RecordsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $this->validate($request,[
-            'no_plate'=>'required|max:7',
-            'name'=>'required',
-            'space_id'=>'required',
-        ]);
+    {   
+          
+        // $this->validate($request,[
+        //     'no_plate'=>'required|max:7',
+        //     'name'=>'required',
+        //     'space_id'=>'required',
+        // ]);
 
 
 
         $record = Record::find($id);
-        $record->no_plate=$request->input('no_plate');
+        
+        $record->no_plate=$request->input('preffix').$request->input('numeric').$request->input('suffix');
         $record->name=$request->input('name');
-        $record->space_id=$request->input('space_id');
+        $a=DB::table('spaces')
+                        ->where('st_id','=',$request->input('space_id'))
+                        ->get();
+         
+        $record->space_id=$a[0]->id;;
         $record->save();
-        return redirect('records')->with('message','record edited');
+        return redirect('records')->withStatus(__('Record successfully updated.'));
     }
 
     // public function clamp(Request $request, $id)

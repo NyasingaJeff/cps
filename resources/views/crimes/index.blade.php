@@ -35,12 +35,16 @@
                           {{ __('Crime') }}
                       </th>
                       <th>
+                        {{ __('Description') }}
+                      </th>
+                      <th>
                         {{ __('Fine') }}
                       </th>
+                     
                       <th>
                         {{ __('Added On') }}
                       </th>
-                      <th>
+                      <th class="text-right">
                         {{ __('Actions') }}
                       </th>
                     </thead>
@@ -52,9 +56,13 @@
                             {{ $crime->name }}
                           </td>
                           <td>
+                            {{ $crime->description }}
+                          </td>                          
+                          <td>
                             {{ $crime->fine }}
                           </td>
                           <td>
+                            
                             {{ $crime->created_at->format('Y-m-d H:i:s') }}
                           </td>
                           
@@ -70,7 +78,6 @@
                                   @csrf
                                   @method('delete')
                                   <a class="dropdown-item" href="{{ route('crimes.edit', $crime) }}">{{ __('Edit') }}</a>
-                                  <a class="dropdown-item" href="{{ route('crimes.show', $crime) }}">{{ __('Description') }}</a>
                                   <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to do Away with this?") }}') ? this.parentElement.submit() : ''">
                                   {{ __('Do Away With') }}
                                   </button>

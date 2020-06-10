@@ -26,6 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
+       
         return view('users.create');
     }
 
@@ -37,9 +38,11 @@ class UserController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(UserRequest $request, User $model)
-    {
+    {   
+        $role = $request->input('role');
         $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
-
+        $user= User::latest()->first();
+        $user->assignRole($role);        
         return redirect()->route('user.index')->withStatus(__('User successfully created.'));
     }
 
@@ -62,7 +65,13 @@ class UserController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UserRequest $request, User  $user)
-    {
+    {   
+        //return $user();
+        $role = $request->input('role');
+        //logic to change the user roles
+        if (isset($role)) {
+            $user->syncRoles([$request->input('role')]);
+        }
         $hasPassword = $request->get('password');
         $user->update(
             $request->merge(['password' => Hash::make($request->get('password'))])

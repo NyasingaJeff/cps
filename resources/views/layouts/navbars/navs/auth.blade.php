@@ -10,32 +10,26 @@
     <span class="navbar-toggler-icon icon-bar"></span>
     <span class="navbar-toggler-icon icon-bar"></span>
     </button>
-    <div class="text-right">
-    <ul class="navbar-nav">
-
-          <li class="nav-item dropdown">
-          <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <p>Search by</p>
-            <span class="notification">5</span>
-            <p class="d-lg-none d-md-block">
-              {{ __('Some Actions') }}
-            </p>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">{{ __('Mike John responded to your email') }}</a>
-            <a class="dropdown-item" href="#">{{ __('You have 5 new tasks') }}</a>
-            <a class="dropdown-item" href="#">{{ __('You\'re now friend with Andrew') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Another Notification') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Another One') }}</a>
-          </div>
-        </li>
-
-    </ul>
-    </div>
+   
     <div class="collapse navbar-collapse justify-content-end">
-      <form class="navbar-form" action="">         
+    <form class="navbar-form" method="post" action="{{route('search')}}">
+      @csrf
+      @method('post')
+        <div class="btn-group">
+          <label for="cars">Search In :&nbsp;</label>
+
+          <select name="options" id="options" style=" opacity: 0.4;">
+           
+            <option value="records"><span >Records</span></option>
+            <option value="requests"><span >Request</span></option>
+            <option value="clients"><span >Clients</span></option>
+            
+          </select>
+          
+        </div>&nbsp;      
         <div class="input-group no-border">
-        <input type="text" name="searchinput" value="" class="form-control" placeholder="Search...">
+         
+        <input type="text" name="searchinput" value="" class="form-control" placeholder="Enter Plate or Name..">
         <button type="submit" class="btn btn-white btn-round btn-just-icon">          
           <i class="material-icons">search</i>
           <div class="ripple-container"></div>

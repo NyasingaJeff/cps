@@ -13,6 +13,9 @@
             <a href="{{ route('spaces.pdf', $space) }}" class="btn btn-sm btn-primary">{{ __('print') }}</a>
           </div>
           <div class="card-body">
+            <div class="col-md-12 text-right">
+              <a href="{{ route('spaces.index') }}" class="btn btn-sm btn-primary">{{ __('Back to list') }}</a>
+          </div>
             <div class="table-responsive">
               <table class="table table-hover">
                 <thead class="">

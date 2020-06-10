@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use  App\Mail\CancelRequest;
 
 use Illuminate\Http\Request;
 use App\Task;
 use DB;
+use Mail;
 
 class TasksController extends Controller
 {
@@ -77,10 +79,12 @@ class TasksController extends Controller
             $task->destination = $request->input('destination');
             $task->phone= $request->input('phone');
             $task->status=0;
-            $task->type=2;
+            $task->type=0;
+            $task->email=$request->input('email');
             $task->token=$request->session()->get('_token');
             $task->save();
             // will introduce auth that would redirect the different users to their deffault pages
+            Mail::to($task->email)->send(new CancelRequest($task));
             return redirect('tasks')->with('success','Your Request has been successfully submitted');
     
     
@@ -107,7 +111,7 @@ class TasksController extends Controller
         public function edit($id)
         {
             $task = Task::find($id);
-            return view('tasks.edit');
+            return view('tasks.edit')->with('task', $task);
         }
     
         /**
@@ -129,9 +133,11 @@ class TasksController extends Controller
             $task= Task::find($id);
             $task->name= $request->input('name');
             $task->location= $request->input('location');
+            $task->email=$request->input('email');
+            $task->destination=$request->input('destination');
             $task->phone= $request->input('phone');
             $task->save();
-            return redirect('tasks')->with('success', 'Task updated');
+            return redirect('tasks')->withStatus(__('Task successfully updated.'));
             
         }
 

@@ -17,15 +17,17 @@ class SpacesController extends Controller
      */
     public function index()
     {   
+        $spaces = Space::all();
+        $reserves= \App\Reserve::all();
        
-        $spaces=Space::all()->groupBy('location');
-        //to determine whether to load the reserved parking view
-        $reserved = DB:: table('spaces')
-                  ->where('status','=','1')
-                  ->get();
-        $reservedcount= count($reserved);
+        // $spaces=Space::all()->groupBy('location');
+        // //to determine whether to load the reserved parking view
+        // $reserved = DB:: table('spaces')
+        //           ->where('status','=','1')
+        //           ->get();
+        // $reservedcount= count($reserved);
     
-        return view('spaces.index')->with('spaces',$spaces)->with('reservedcount',$reservedcount);
+        return view('spaces.index')->with('spaces',$spaces)->with('reserves',$reserves);
 
         
     }
@@ -147,17 +149,18 @@ class SpacesController extends Controller
         ]);
 
 
-        //first find the field to be edited
-        $space = Space::find($id);
+        //get thw prevous version pf the resource
         $oldspace = Space::find($id);
+        $space = Space::find($id);
         //to check if the user altered the prevous location information.. 
+     
                  
         $space->location=$request->input('location');
         $space->street=$request->input('street');
 
         if( $space->location == $oldspace->location  &&  $space->street == $oldspace->street)
             {
-                $space->st_id = $a.$b.$x; 
+                $space->st_id = $oldspace->st_id; 
             } else {
                 $streets = DB::table('spaces')
                 ->where('location','=', $space->location)

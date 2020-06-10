@@ -50,7 +50,7 @@
                     <tbody>
                       @foreach($tasks as $task)
                     
-                       <!-- @if($task->type=2) -->
+                       
                       
                         <tr>
                           <td>
@@ -69,9 +69,18 @@
                           <td>
                             {{ $task->location }}
                           </td>
+                          @if ($task->type==0)
                           <td >
-                            {{ $task->destination}}
+                            
+                            {{ $task->destination}} 
+                          </td>                              
+                          @else
+                          <td class="text-danger" >
+                           
+                            {{ $task->destination}} 
                           </td>
+                          @endif
+                          
                           <td class="td-actions text-right">
 
                           <div class="dropdown">
@@ -93,7 +102,7 @@
                         </div>                           
                         </td>                       
                         </tr>
-                        <!-- @endif -->
+                       
                       @endforeach
                     </tbody>
                   </table>

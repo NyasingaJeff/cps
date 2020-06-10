@@ -77,17 +77,31 @@ class ClientsController extends Controller
     public function export_pdf($id){
         $client = clients::find($id);
         $records = $client->record;
-        
-        $pdf = \PDF::loadView('clients.report',compact('client'));
-        return $pdf->download($client->no_plate.'.pdf');
+        $totals=array();
+        foreach ($records as $record) {
+            array_push($totals,$record->space->price);
+        }
+        $totals= array_sum($totals);
+         
+        $pdf = \PDF::loadView('clients.report',compact(['client','records','totals']));
+        return $pdf->download($client->no_plate.'-PARKINGREPORT'.'.pdf');
      }
 
      public function chargesheet_export_pdf($id){
         $client = clients::find($id);
         $offences= \App\Offender::where('no_plate',$client->no_plate)->get();
-        
-        $pdf = \PDF::loadView('clients.chargesheet',compact('offences'));
-        return $pdf->download($client->no_plate.'-CHARGESHEET'.'.pdf');
+        $fines=array();
+        foreach ($offences as $offence) {
+            if ($offence->trashed) {
+                
+            } else {
+                array_push($fines,$offence->fine_due);
+            }           
+           
+        }
+        $totalFines=array_sum($fines);
+        $pdf = \PDF::loadView('clients.chargesheet',compact(['client','offences','totalFines']));
+        return $pdf->download($client->no_plate.'-CHARGSHEET:'.date("d.m.Y.H.i.s").'.pdf');
      }
 
     /**

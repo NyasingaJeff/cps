@@ -3,10 +3,7 @@
 @section('content')
 <div class="content">
     <div class="container-fluid">
-                <div class="row">
-                    <!-- $key represents the towns that the spaces are located this loop is to iterate through all thhe locations  -->
-                    @foreach ($spaces as $town => $slots )
-                    <h3 class= text-center>{{$town}}</h3>
+                <div class="row">                   
                   <div class="col-md-12">
                     <div class="card">
                       <div class="card-header card-header-primary">
@@ -18,13 +15,13 @@
                           <table class="table">
                             <thead class=" text-primary">
                               <th>
-                                ID
-                              </th>
-                              <th>
-                                Category
+                                Location
                               </th>
                               <th>
                                 Street
+                              </th>
+                              <th>
+                                Category
                               </th>
                               <th>
                                 Bookings
@@ -37,24 +34,24 @@
                               </th>
                             </thead>
                             <tbody>                            
-                              @foreach ($slots as $slot)
+                              @foreach ($spaces as $space)
                               
-                              @if ($slot->status==0)
+                              @if ($space->status !=1 )
                               <tr>
                                 <td>
-                                  {{$slot->id}}
+                                  {{$space->location}}
                                 </td>
                                 <td>
-                                  {{$slot->category}}
+                                  {{$space->street}}
                                 </td>
                                 <td>
-                                  {{$slot->street}}
+                                  {{$space->category}}
                                 </td>
                                 <td>
-                                  {{$count= $slot->record->count() }}
+                                  {{$count= $space->record->count() }}
                                 </td>
                                 <td class="text-primary">
-                                  {{$count*$slot->price}}
+                                  {{$count*$space->price}}
                                 </td>
                               <td class="td-actions text-right">
 
@@ -63,20 +60,20 @@
                                       . . .
                                   </a>
                                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                      <form method="post" action="{{ route('spaces.edit', $slot) }}" autocomplete="off" class="form-horizontal">
+                                      <form method="post" action="{{ route('spaces.edit', $space) }}" autocomplete="off" class="form-horizontal">
                                         @csrf
                                         @method('put')
-                                        <a class="dropdown-item" href="{{ route('space.reserve', $slot) }}">{{ __('Reserve') }}</a>
+                                        <a class="dropdown-item" href="{{ route('space.reserve', $space) }}">{{ __('Reserve') }}</a>
 
 
                                       </form>
                                                                       
                                                         
-                                <form action="{{ route('spaces.destroy', $slot) }}" method="post">
+                                <form action="{{ route('spaces.destroy', $space) }}" method="post">
                                   @csrf
                                   @method('delete')
-                                  <a class="dropdown-item" href="{{ route('spaces.edit', $slot) }}">{{ __('Edit') }}</a>                               
-                                  <a class="dropdown-item" href="{{ route('spaces.show', $slot) }}">{{ __('View') }}</a>                               
+                                  <a class="dropdown-item" href="{{ route('spaces.edit', $space) }}">{{ __('Edit') }}</a>                               
+                                  <a class="dropdown-item" href="{{ route('spaces.show', $space) }}">{{ __('View') }}</a>                               
                                   <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this space ?") }}') ? this.parentElement.submit() : ''">
                                   {{ __('Delete') }}
                                   </button>
@@ -94,7 +91,7 @@
                       </div>
                     </div>
                   </div>
-                  @if($reservedcount != 0)
+                  @if(isset($reserves))
                   <div class="col-md-12">
                     <div class="card card-plain">
                       <div class="card-header card-header-primary">
@@ -106,7 +103,10 @@
                           <table class="table table-hover">
                             <thead class="">
                               <th>
-                                ID
+                                Location
+                              </th>
+                              <th>
+                                Street
                               </th>
                               <th>
                                 Category
@@ -115,7 +115,7 @@
                                 Client
                               </th>
                               <th>
-                                Duration
+                                Duration(In Months)
                               </th>
                               <th>
                                 Amount due.
@@ -125,25 +125,37 @@
                               </th>
                             </thead>
                             <tbody>
-                              @foreach ($slots as $slot)
-                                 @if ($slot->status==1)
+                              @foreach ($reserves as $reserve)
+                                
                                  <tr>
                                   <td>
-                                    {{$slot->id}}
+                                    {{$reserve->space->location}}
                                   </td>
                                   <td>
-                                    {{$slot->category}}
+                                    {{$reserve->space->street}}
                                   </td>
                                   <td>
-                                    {{$slot->created_at}}
+                                    {{$reserve->space->category}}
                                   </td>
                                   <td>
-                                    {{$slot->price}}
+                                    {{$reserve->organisation}}
                                   </td>
-                                  <td class="text-primary">
-                                    $36,738
+                                  <td>
+                                    {{$reserve->duration}}
                                   </td>
-
+                                 
+                                 
+                                    <td class="text-primary"> 
+                                        @if($reserve->duration >=3 )
+                                            {{$reserve->space->price*($reserve->duration*28*0.9)}} 
+                                        @elseif(($reserve->duration >= 6) &&($reserve->duration <= 10))
+                                          {{$reserve->space->price*($reserve->duration*28*0.8)}}
+                                        @elseif($reserve->duration >= 11)
+                                          {{$reserve->space->price*($reserve->duration*28*0.7)}}
+                                        @else
+                                          {{$reserve->space->price*$reserve->duration*28}} 
+                                       @endif                                 
+                                    </td>
                                    <td class="td-actions text-right">
 
                                   <div class="dropdown">
@@ -151,17 +163,17 @@
                                              . . .
                                            </a>
                                       <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                        <form method="post" action="{{ route('spaces.edit', $town) }}" autocomplete="off" class="form-horizontal">
+                                        <form method="post" action="{{ route('unreserve', $reserve) }}" autocomplete="off" class="form-horizontal">
                                               @csrf
-                                              @method('put')
+                                              @method('delete')
                 <!-- find a way to unreserve.. this will destroy the client and unreserve the space -->
-                                            <a class="dropdown-item" href="{{ route('clients.create', $town) }}">{{ __('Unreserve') }}</a>
+                                            <a class="dropdown-item" href="{{ route('unreserve', $reserve) }}">{{ __('Unreserve') }}</a>
                                          </form>                                                                             
-                                         <form action="{{ route('spaces.destroy', $town) }}" method="post">
+                                         <form action="{{ route('unreserve', $reserve) }}" method="post">
                                                @csrf
                                                @method('delete')
-                                              <a class="dropdown-item" href="{{ route('spaces.edit', $town) }}">{{ __('Edit') }}</a>                               
-                                              <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this space ?") }}') ? this.parentElement.submit() : ''">
+                                              <a class="dropdown-item" href="{{ route('reserve.edit', $reserve) }}">{{ __('Ediit Infomation') }}</a>                               
+                                              <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to unreserve this space ?") }}') ? this.parentElement.submit() : ''">
                                              {{ __('Delete') }}
                                              </button>
                                         </form>                                                                                           
@@ -169,7 +181,7 @@
                                   </div>                        
                                   </td>                                
                                 </tr>
-                                 @endif
+                                
                               @endforeach
                             </tbody>
                           </table>
@@ -177,8 +189,12 @@
                       </div>
                     </div>
                   </div>
+                  @else
+                    <div class="row">
+                      {{'No RESEVED ONes'}}
+                    </div>
                   @endif
-                    @endforeach      
+                       
 
                 </div>        
     </div>

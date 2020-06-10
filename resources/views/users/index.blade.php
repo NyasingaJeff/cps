@@ -38,6 +38,9 @@
                         {{ __('Email') }}
                       </th>
                       <th>
+                        {{ __('Role') }}
+                      </th>
+                      <th class="text-right">
                         {{ __('Creation date') }}
                       </th>
                       <th class="text-right">
@@ -53,7 +56,15 @@
                           <td>
                             {{ $user->email }}
                           </td>
-                          <td>
+                          <td class="text-primary ">
+                            <!-- use logic to get the Role the Employee Has -->
+                            @if($user->hasRole('tower'))
+                              {{'Tower'}}
+                            @elseif($user->hasRole('attendant'))
+                              {{'Attendant'}}
+                            @endif
+                          </td>
+                          <td  class="text-right">
                             {{ $user->created_at->format('Y-m-d') }}
                           </td>
                           <td class="td-actions text-right">

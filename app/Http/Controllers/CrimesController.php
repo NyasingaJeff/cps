@@ -38,13 +38,15 @@ class CrimesController extends Controller
     {
         $this->validate($request,[
             'name'=>'required',
-            'fine'=>'integer|required'
+            'fine'=>'integer|required',
+            'description'=>'string|required'
         ]);
 
 
         $crime= new Crime;
         $crime->name=$request->input('name');
         $crime->fine=$request->input('fine');
+        $crime->description=$request->input('description');
         $crime->save();
         return redirect('crimes');
 
@@ -58,7 +60,7 @@ class CrimesController extends Controller
      */
     public function show($id)
     {
-        $crime= Crime::find(id);
+        $crime= Crime::find($id);
         return view('crimes.show')->with('crime',$crime);
     }
 
@@ -70,7 +72,7 @@ class CrimesController extends Controller
      */
     public function edit($id)
     {
-        $crime= Crime::find(id);
+        $crime= Crime::find($id);
         return view('crimes.edit')->with('crime',$crime);
     }
 
