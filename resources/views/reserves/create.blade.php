@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'reservedspaces-management', 'titlePage' => __('Reserved Spaces Management')])
+@extends('layouts.app', ['activePage' => 'records-create', 'titlePage' => __('Reserved Spaces Management')])
 
 @section('content')
   <div class="content">

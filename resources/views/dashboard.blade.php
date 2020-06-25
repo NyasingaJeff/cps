@@ -133,19 +133,19 @@
                   <ul class="nav nav-tabs" data-tabs="tabs">
                     <li class="nav-item">
                       <a class="nav-link active" href="#profile" data-toggle="tab">
-                        <i class="material-icons">bug_report</i> Bugs
+                        <i class="material-icons"></i> Pending Tasks
                         <div class="ripple-container"></div>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="#messages" data-toggle="tab">
-                        <i class="material-icons">code</i> Website
+                        <i class="material-icons"></i> Towed 
                         <div class="ripple-container"></div>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="#settings" data-toggle="tab">
-                        <i class="material-icons">cloud</i> Server
+                        <i class="material-icons"></i> Imponded
                         <div class="ripple-container"></div>
                       </a>
                     </li>

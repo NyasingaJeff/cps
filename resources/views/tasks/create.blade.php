@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'tasks-management', 'titlePage' => __('Request Tow ')])
+@extends('layouts.app', ['activePage' => 'tasks-create', 'titlePage' => __('Request Tow ')])
 
 @section('content')
   <div class="content">
@@ -77,11 +77,16 @@
                 <div class="row">
                   <label class="col-sm-2 col-form-label" for="input-location">{{ __(' Curent location') }}</label>
                   <div class="col-sm-7">
-                    <div class="form-group{{ $errors->has('location') ? ' has-danger' : '' }}">
-                      <input class="form-control{{ $errors->has('location') ? ' is-invalid' : '' }}" input type="location" name="location" id="input-location" placeholder="{{ __('Enter your curreent Location') }}" value="" required />
-                      @if ($errors->has('location'))
-                        <span id="name-error" class="error text-danger" for="input-name">{{ $errors->first('location') }}</span>
-                      @endif
+                    <div class="input-group">
+                      <input type="text" name="town" max="3" class="form-control" placeholder="TOWN or SLOT ID"/>
+                      @if ($errors->has('town'))
+                          <span id="email-error" class="error text-danger" for="input-town">{{ $errors->first('town') }}</span>
+                        @endif
+                      <span class="input-group-addon">--</span>
+                      <input type="text" name="description"  class="form-control" placeholder="  Explain Further......"/>
+                      @if ($errors->has('description'))
+                          <span id="description-error" class="error text-danger" for="input-descriptin">{{ $errors->first('description') }}</span>
+                        @endif                    
                     </div>
                   </div>
                 </div>

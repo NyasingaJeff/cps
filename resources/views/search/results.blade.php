@@ -11,12 +11,43 @@
           <div class="card-header card-header-primary">
             <h4 class="card-title mt-0"> Results for for {{$query->searchinput}} </h4>
            
-            <p class="card-category">Displaying  {{count($result)}} records</p>            
+            <p class="card-category">Displaying  {{count($result)}}  records</p>            
           </div>
-          
+         
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-hover">
+                @if ($origin=="users")
+                    <thead class="">
+                        <th>
+                          Name
+                        </th>
+                        <th>
+                          Role
+                        </th>
+                    
+                    </thead>
+                    <tbody>
+                      @foreach ($result as $result)
+                      <tr>
+                      <td>
+                      {{$result->name}}
+                      </td>
+                      <td class="text-primary ">
+                        <!-- use logic to get the Role the Employee Has -->
+                        @if($result->hasRole('tower'))
+                          {{'Tower'}}
+                        @elseif($result->hasRole('attendant'))
+                          {{'Attendant'}}
+                        @endif
+                      </td>
+                      <td class="text-right">
+                          <a href={{ route('user.edit',$result) }} class="btn btn-sm btn-success">{{ __('Edit') }}</a>
+                      </td>                                             
+                      </tr>
+                  @endforeach
+                    </tbody>
+                @else
                 <thead class="">
                   <th>
                     Plate
@@ -24,9 +55,12 @@
                   <th>
                     Client Name
                   </th>
-                 
+
                 </thead>
-                <tbody>
+                    <tbody>
+
+                      
+                    
                 @switch($origin)
                     @case('records')
                         @foreach ($result as $result)
@@ -73,11 +107,14 @@
                             </tr>
                         @endforeach      
                     @break
+                    
                     @default
                         
                 @endswitch
                 
-                </tbody>
+                </tbody>                    
+                @endif
+              </tbody>
               </table>
             </div>
           </div>

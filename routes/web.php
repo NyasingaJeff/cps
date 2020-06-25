@@ -62,7 +62,7 @@ Route::any('/spaces/{id}/reserve','SpacesController@reserve')->name('space.reser
 Route::any('reservation','SpacesController@reservation')->name('space.reservation');
 Route::any('/record/{id}/clamp','RecordsController@clamp')->name('records.clamp');
 Route::any('/record/{id}/impound','RecordsController@impound')->name('records.impound');
-Route::any('','RecordsController@offender')->name('records.offender');
+Route::any('/record/offender','RecordsController@offender')->name('records.offender');
 Route::any('reserves/create', function()
 {
 	return view('reserves.create');

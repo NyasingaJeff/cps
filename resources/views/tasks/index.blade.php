@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'task-management', 'titlePage' => __('Task Management')])
+@extends('layouts.app', ['activePage' => 'task-index', 'titlePage' => __('Task Management')])
 
 @section('content')
   <div class="content">
@@ -8,7 +8,7 @@
             <div class="card">
               <div class="card-header card-header-primary">
                 <h4 class="card-title ">{{ __('Submitted Towing Requests') }}</h4>
-                <p class="card-category">{{'Displaying'}} {{$tasks->count() }} {{'Records'}}</p>
+                <p class="card-category">{{'Displaying'}} {{count($tasks) }} {{'Records'}}</p>
               </div>
               <div class="card-body">
                 @if (session('status'))

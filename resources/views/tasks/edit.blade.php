@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'tasks-management', 'titlePage' => __('Request Tow ')])
+@extends('layouts.app', ['activePage' => 'tasks-edit', 'titlePage' => __('Request Tow ')])
 @php
 $plate= str_split($task->no_plate,3);   
 @endphp
@@ -58,7 +58,7 @@ $plate= str_split($task->no_plate,3);
                   <label class="col-sm-2 col-form-label">{{ __('Phone Number') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('numeric') ? ' has-danger' : '' }}">
-                      <input class="form-control{{ $errors->has('Numeric ') ? ' is-invalid' : '' }}" name="phone" id="input-phone" type="text" placeholder="{{ __() }}" value="{{ $task->phone }}" required />
+                      <input class="form-control{{ $errors->has('Numeric ') ? ' is-invalid' : '' }}" name="phone" id="input-phone" type="text" placeholder="{{ $task->phone }}" value="{{ $task->phone }}" required />
                       @if ($errors->has('phone'))
                         <span id="email-error" class="error text-danger" for="input-numeric">{{ $errors->first('phone') }}</span>
                       @endif

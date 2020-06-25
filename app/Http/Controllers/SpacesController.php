@@ -103,9 +103,11 @@ class SpacesController extends Controller
     {
         //will add the fact the fxnality to view all the records tagged to this specific space
         $space= Space::find($id);
+        $slot = str_split($space->st_id,4);
+        $slot=$slot[1];
         $records= $space->record;
         $count= count($records);
-        return view('spaces.show')->with('space',$space)->with('records',$records)->with('count',$count);
+        return view('spaces.show')->with('space',$space)->with('records',$records)->with('count',$count)->with('slot',$slot);
     }
     public function export_pdf($id){
        $space = Space::find($id);
@@ -183,7 +185,7 @@ class SpacesController extends Controller
         $space->category=$request->input('category');
 
         $space->save();
-        return redirect('spaces')->with('message','Infomation Edited Succesfully');
+        return redirect('spaces')->withStatus('Infomation Edited Succesfully');
     }
 
     public function reserve ($id)
@@ -226,6 +228,6 @@ class SpacesController extends Controller
     {
         $space=Space::find($id);
         $space->delete();
-        return redirect('spaces')->with('message','space Written off');
+        return redirect('spaces')->withStatus('space Written off');
     }
 }

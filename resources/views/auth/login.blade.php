@@ -13,17 +13,7 @@
         <div class="card card-login card-hidden mb-3">
           <div class="card-header card-header-primary text-center">
             <h4 class="card-title"><strong>{{ __('Login') }}</strong></h4>
-            <div class="social-line">
-              <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
-                <i class="fa fa-facebook-square"></i>
-              </a>
-              <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
-                <i class="fa fa-twitter"></i>
-              </a>
-              <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
-                <i class="fa fa-google-plus"></i>
-              </a>
-            </div>
+            
           </div>
           <div class="card-body">
             <div class="bmd-form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
@@ -70,19 +60,15 @@
           </div>
         </div>
       </form>
-      <div class="row">
-        <div class="col-6">
+      <div class="rown text-center">
+        <div  >
             @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}" class="text-light">
-                    <small>{{ __('Forgot password?') }}</small>
+                    <small class="text-center">{{ __('Forgot password?') }}</small>
                 </a>
             @endif
         </div>
-        <div class="col-6 text-right">
-            <a href="{{ route('register') }}" class="text-light">
-                <small>{{ __('Create new account') }}</small>
-            </a>
-        </div>
+        
       </div>
     </div>
   </div>

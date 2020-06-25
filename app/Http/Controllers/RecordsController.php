@@ -21,8 +21,40 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        $records= Record::all();        
-        $offenders= \App\Offender::all();
+        
+        $location = auth()->user()->location;
+        
+        //getting all the spaces under the user/ employee
+        $spaces = \App\Space::where('location', '=' , $location)->get();
+            //get all of the records on offenders
+        $os=\App\Offender::all();
+        //getting thre records  
+        $allrecords =array();
+        $alloffences =array();
+        if ($location=='Admin') {
+            $records = \App\Record::all();
+            $offenders= \App\Offender::all();
+        } else {
+           
+            foreach ($spaces as $space) {
+                $rcd = $space->record;
+                array_push($allrecords,$rcd);
+            }
+            $records=$allrecords[0];
+            //get the offences under this users jurdisiction
+            foreach ($os as $o) {
+               
+                $town=explode("-",$o->location);
+                $town= $town[0];
+                if ($town==$location." ") {
+                    array_push($alloffences,$o);
+                }
+            }
+            $offenders=$alloffences;
+        }  
+        
+
+
         return view('records.index')->with('records',$records)->with('offenders', $offenders);
     }
 
@@ -76,9 +108,9 @@ class RecordsController extends Controller
         $preffix= $request->input('preffix'); 
         $numeric=$request->input('numeric');
         $suffix=$request->input('suffix');   
-        $record->no_plate=$preffix.$numeric.$suffix;
+        $record->no_plate=strtoupper($preffix.$numeric.$suffix);
         $record->phone=$request->input('phone');   
-        $record->name=$request->input('name');
+        $record->name=strtoupper($request->input('name'));
         $i = DB::table('spaces')
             ->where('st_id','=',$request->space_id)
             ->get();
@@ -182,13 +214,16 @@ class RecordsController extends Controller
     {   
         
         $record= Record::find($id);
-        return view('offenders.create')->with('record', $record);
+        $crimes = \App\crime::all();
+        return view('offenders.create')->with('record', $record)->with('crimes', $crimes);
     }
 
     //now to record the offender
     public function offender( Request $request){           
         
         $records= Record::all();
+
+
         $offender = new \App\Offender;;
         $offender->no_plate= $request->input('no_plate');
         $town= $request->town;
@@ -198,7 +233,7 @@ class RecordsController extends Controller
         $offender->make= $request->input('make');
         $offender->model= $request->input('model');
         $offender->color= $request->input('color');
-        $offender->crime_id= $request->input('crime_id');
+        $offender->crime_id= $request->input('crime');
         //to check if the offender has any unpaid debts if so add it to the Fine the offender should pay.
         $debts= DB::table('offenders')
                         ->where('no_plate','=',$offender->no_plate)
@@ -206,9 +241,16 @@ class RecordsController extends Controller
                         ->get();
         //checking if the client has more than 2 strikes,, if so multiply the outstanding charges with 2
         $strikes = count($debts);
-        $fine = \App\Crime::find($request->input('crime_id'));
+       $crime=$request->input('crime');
+        if (isset($crime)) {
+            
+            $fine = \App\Crime::find($request->input('crime'));
+            $fine_due = $fine->fine;
+        } 
         
-        $fine_due = $fine->fine;    
+    
+        
+           
         //if the offender has  more than three outsatanding crimes the system will automatically generate a record to indicate that.
         if ($strikes >= 3) {
             $outs= new \App\Offender;
@@ -228,6 +270,7 @@ class RecordsController extends Controller
         $offender->fine_due= $fine_due;
         $offender->status=0;
         $offender->save();
+        
         return redirect('records')->with('message','record edited')->with('records',$records);
 
     }

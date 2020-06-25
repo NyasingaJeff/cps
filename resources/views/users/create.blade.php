@@ -63,22 +63,39 @@
                 </div>
                 <div class="row">
                   <label class="col-sm-2 col-form-label" for="role">{{ __('Role') }}</label>
-                  <div class="col-sm-7">
+                  <div class="col-6">
                     <div class="form-group">
-                    <input type="radio" id="admin" name="role" value="admin">
-                      <label for="male">Admin</label><br>
+                    <input type="radio" id="admin" name="role" value="admin" >
+                      <label for="admin">Admin</label>
                       <input type="radio" id="attendant" name="role" value="attendant">
-                      <label for="female">Attendant</label><br>
+                      <label for="attendant">Attendant</label>
                       <input type="radio" id="tower" name="role" value="tower">
-                      <label for="other">Tower</label>
+                      <label for="tower">Tower</label>
                     </div>
                   </div>
                 </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label" for="location">{{ __('Location') }}</label>
+                  <div class="col-6">
+                      <div class="form-group">
+                        <select name="location" id="location" style="opacity: 0.5" required>
+                        <option value=""> Select location</option>
+                        <option value="Admin"> Admin</option>
+                       @foreach ($spaces as $space)
+                       <option value="{{ $space}}">{{$space}}</option> 
+                       @endforeach 
+                    </select>               
+                  </div>
+                  </div>
+                </div>
+                  <div class="row">
+                    <div class="card-footer ml-auto mr-auto text-center" >
+                      <button type="submit" class="btn btn-primary">{{ __('Add User') }}</button>
+                    </div>
+                  </div>
               </div>
              
-              <div class="card-footer ml-auto mr-auto">
-                <button type="submit" class="btn btn-primary">{{ __('Add User') }}</button>
-              </div>
+              
             </div>
           </form>
         </div>

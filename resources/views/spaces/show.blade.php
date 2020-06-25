@@ -5,7 +5,7 @@
 <div class="col-md-12">
         <div class="card card-plain">
           <div class="card-header card-header-primary">
-            <h4 class="card-title mt-0"> Records From {{$space->location}}, {{$space->street}} Street </h4>
+          <h4 class="card-title mt-0"> Records From {{$space->location}}, {{$space->street}} Street, Slot number:{{$slot}}</h4>
             <p class="card-category">Displaying the {{$count}} records</p>            
           </div>
           <div class="col-md-12 text-right">

@@ -56,6 +56,20 @@
                   </div>
                 </div>
                 <div class="row">
+                  <label class="col-sm-2 col-form-label" for="location">{{ __('Location') }}</label>
+                  <div class="col-6">
+                      <div class="form-group">
+                        <select name="location" id="location" style="opacity: 0.5" required>
+                        <option value=""> Select location</option>
+                        <option value="Admin"> Admin</option>
+                       @foreach ($spaces as $space)
+                       <option value="{{ $space}}">{{$space}}</option> 
+                       @endforeach 
+                    </select>               
+                  </div>
+                  </div>
+                </div>
+                <div class="row">
                   <label class="col-sm-2 col-form-label" for="input-password">{{ __(' Password') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">

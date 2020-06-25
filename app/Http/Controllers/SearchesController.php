@@ -22,6 +22,10 @@ class SearchesController extends Controller
             $result= \App\clients::where('no_plate','=',$request->input('searchinput'))->orWhere('name','=',$request->input('searchinput'))->get();
             $origin = 'clients';
             break;
+        case 'users':
+            $result= \App\User::where('email','=',$request->input('searchinput'))->orWhere('name','=',$request->input('searchinput'))->get();
+            $origin = 'users';
+            break;
         default:
          $result= \App\Record::where('no_plate','=',$request->input('searchinput'))->orWhere('name','=',$request->input('searchinput'))->get();
          $origin = 'clients';

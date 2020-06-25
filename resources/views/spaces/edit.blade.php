@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'space-management', 'titlePage' => __('Edit Spaces')])
+@extends('layouts.app', ['activePage' => 'spaces-edit', 'titlePage' => __('Edit Spaces')])
 
 @section('content')
   <div class="content">

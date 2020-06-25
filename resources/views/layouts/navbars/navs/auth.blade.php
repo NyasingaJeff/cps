@@ -12,6 +12,7 @@
     </button>
    
     <div class="collapse navbar-collapse justify-content-end">
+    @can('admin')
     <form class="navbar-form" method="post" action="{{route('search')}}">
       @csrf
       @method('post')
@@ -19,10 +20,11 @@
           <label for="cars">Search In :&nbsp;</label>
 
           <select name="options" id="options" style=" opacity: 0.4;">
-           
+            <option value=""><span >Select Option</span></option>
             <option value="records"><span >Records</span></option>
-            <option value="requests"><span >Request</span></option>
+            <option value="requests"><span >Requests</span></option>
             <option value="clients"><span >Clients</span></option>
+            <option value="users"><span >Users</span></option>
             
           </select>
           
@@ -36,6 +38,7 @@
         </button>
         </div>
       </form>
+      @endcan
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" href="{{ route('home') }}">
@@ -46,7 +49,7 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">notifications</i>
             <span class="notification">5</span>
             <p class="d-lg-none d-md-block">
@@ -70,12 +73,12 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
             <a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Settings') }}</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Log out') }}</a>
           </div>
         </li>
       </ul>
     </div>
+    
   </div>
 </nav>

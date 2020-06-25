@@ -26,8 +26,9 @@ class UserController extends Controller
      */
     public function create()
     {
+       $spaces=\App\Space::all()->pluck('location');
        
-        return view('users.create');
+        return view('users.create')->with('spaces',$spaces);
     }
 
     /**
@@ -42,7 +43,9 @@ class UserController extends Controller
         $role = $request->input('role');
         $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
         $user= User::latest()->first();
-        $user->assignRole($role);        
+        $user->location=$request->input('location');
+        $user->assignRole($role); 
+        $user->save();       
         return redirect()->route('user.index')->withStatus(__('User successfully created.'));
     }
 
@@ -53,8 +56,9 @@ class UserController extends Controller
      * @return \Illuminate\View\View
      */
     public function edit(User $user)
-    {
-        return view('users.edit', compact('user'));
+    {   
+        $spaces=\App\Space::all()->pluck('location');
+        return view('users.edit', compact(['user','spaces']));
     }
 
     /**

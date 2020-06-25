@@ -62,6 +62,8 @@
                               {{'Tower'}}
                             @elseif($user->hasRole('attendant'))
                               {{'Attendant'}}
+                            @elseif($user->hasRole('admin'))
+                              {{'Admin'}}
                             @endif
                           </td>
                           <td  class="text-right">

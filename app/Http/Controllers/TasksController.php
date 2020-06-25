@@ -18,8 +18,30 @@ class TasksController extends Controller
          */
         public function index()
         {   
-        
-            $tasks= Task::all();
+            $userlocation =auth()->user()->location;
+            $alltasks = Task::all();
+            $usertasks=array();
+            if ($userlocation=='Admin') {
+                $tasks= Task::all();
+            } else {
+                foreach ($alltasks as $task) {
+                    $town=$task->location;
+                    $town=explode(",",$town);
+                    $town=$town[0];
+                    if ($town==$userlocation) {
+                        array_push($usertasks, $task);
+                    } else {
+                        $tasks='not availale';
+                    }
+                    
+            }
+            $tasks=$usertasks   ;   
+            
+                
+            }
+            
+
+           
             return view('tasks.index')->with('tasks',$tasks);
         }
     
@@ -44,13 +66,14 @@ class TasksController extends Controller
         {
             $this->validate($request,[
                 'name'=>'required',
-                'phone'=>'required',
-                'location'=>'required'
+                'phone'=>'required|max:12|min:10',
+                'town'=>'required'
+
                 
             ]);
             // To check if the Car is at a slot
             $locate = DB::table('spaces')
-                        ->where('st_id','=',$request->input('location'))
+                        ->where('st_id','=',$request->input('town'))
                         ->get();
            
             if($locate->isNotEmpty()){
@@ -58,9 +81,9 @@ class TasksController extends Controller
                 $street= $locate[0] ->street;
                 $slot = str_split($locate[0]->st_id,4);
                 $slot = $slot[1];
-                $actuallocation= $town.' '.'town'.' '.$street.' '.'street,'.' '.'slot number'.' '.$slot;
+                $actuallocation= $town.' '.','.' '.$street.' '.'street,'.' '.'slot number'.' '.$slot;
             }else {
-                $actuallocation= $request->input('location');
+                $actuallocation= $request->input('town').','.$request->input('description');
             }
             $plate =$request->input('preffix').$request->input('numeric').$request->input('suffix');
             //to chek if the client details had already been recorded if not Record it,
@@ -80,12 +103,15 @@ class TasksController extends Controller
             $task->phone= $request->input('phone');
             $task->status=0;
             $task->type=0;
-            $task->email=$request->input('email');
+            if ($request->input('email')->isset()) {
+                $task->email=$request->input('email');
+            }
+            
             $task->token=$request->session()->get('_token');
             $task->save();
-            // will introduce auth that would redirect the different users to their deffault pages
-            Mail::to($task->email)->send(new CancelRequest($task));
-            return redirect('tasks')->with('success','Your Request has been successfully submitted');
+            //Uncomment this and the app wiill send mail to the users email if set...
+            //Mail::to($task->email)->send(new CancelRequest($task));
+            return redirect('tasks')->withStatus('success','Your Request has been successfully submitted');
     
     
         }
@@ -124,9 +150,9 @@ class TasksController extends Controller
         public function update(Request $request, $id)
         {
             $this->validate($request,[
-                'name'=>'required|text',
-                'phone'=>'required|max:10|integer',
-                'location'=>'required|text'
+                'name'=>'required|string',
+                'phone'=>'required|max:12|min:10',
+                'location'=>'required|string'
                 
             ]);
             
