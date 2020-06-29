@@ -17,7 +17,7 @@ class CreateTasksTable extends Migration
             //delete a task after its done or change the status
             $table->bigIncrements('id');
             $table->string('name');
-            $table->integer('phone');
+            $table->string('phone');
             $table->text('location');
             $table->text('destination');
             $table->string('no_plate');

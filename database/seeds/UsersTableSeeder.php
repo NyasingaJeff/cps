@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+// use Spatie\Permission\Models\Role;
+// use Spatie\Permission\Models\Permission;
+
 
 class UsersTableSeeder extends Seeder
 {
@@ -11,14 +14,17 @@ class UsersTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        DB::table('users')->insert([
+    {   //admin
+        $admin=\App\User::create([
             'name' => 'Admin Admin',
+            'location'=> 'admin',
             'email' => 'admin@material.com',
             'email_verified_at' => now(),
             'password' => Hash::make('secret'),
             'created_at' => now(),
             'updated_at' => now()
         ]);
+        
+        $admin ->assignRole('admin');
     }
 }

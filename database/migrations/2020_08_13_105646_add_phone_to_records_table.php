@@ -14,7 +14,7 @@ class AddPhoneToRecordsTable extends Migration
     public function up()
     {
         Schema::table('records', function (Blueprint $table) {
-            $table->integer('phone')->nullable()->after('name');
+            $table->string('phone')->nullable()->after('name');
         });
     }
 
