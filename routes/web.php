@@ -53,45 +53,40 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
+	Route::any( '/records/{id}/clamp', 'RecordsController@clamp')->name('records.clamp');
+	Route::any('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
+	Route::any('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
+	Route::any('/spaces/{id}/reserve','SpacesController@reserve')->name('space.reserve');
+	Route::any('reservation','SpacesController@reservation')->name('space.reservation');
+	Route::any('/record/{id}/clamp','RecordsController@clamp')->name('records.clamp');
+	Route::any('/record/{id}/impound','RecordsController@impound')->name('records.impound');
+	Route::any('/record/offender','RecordsController@offender')->name('records.offender');
+	Route::any('reserves/create', function()
+	{	return view('reserves.create');
+	})->name('reserves.create');
+	Route::post('search', 'SearchesController@search')->name('search');
+	Route::get('/spaces/{id}/pdf','SpacesController@export_pdf')->name('spaces.pdf');
+	Route::any('pay', function()
+	{	return view('records.pay');
+	})->name('records.pay');
+	Route::get('/tasks/{id}/do','TasksController@do')->name('tasks.do');
+	Route::get('client/{id}/report', 'ClientsController@export_pdf')->name('client.pdf');
+	Route::get('client/{id}/chargesheet', 'ClientsController@chargesheet_export_pdf')->name('chargesheet.pdf');
+	Route::post('rolespermissions/store','RolesAndPermissionsController@store')->name('rolespermission.store');
+	Route::get('rolesandpermissions','RolesAndPermissionsController@index')->name('rolespermission.index');
+	Route::get('rolesandpermissions/create','RolesAndPermissionsController@create')->name('rolespermission.create');
+	Route::any('reserves/{id}/edit','ReservesController@edit')->name('reserve.edit');
+	Route::any('reserves/{id}/update','ReservesController@update')->name('reserve.update');
+	Route::any('reserves/{id}/delete','ReservesController@destroy')->name('unreserve');
+	Route::resources([
+		'records'=> 'RecordsController',
+		'spaces'=>'SpacesController',
+		'tasks'=>'TasksController',
+		'clients'=>'ClientsController',
+		'crimes'=>'CrimesController'
+		
 
-
-Route::any( '/records/{id}/clamp', 'RecordsController@clamp')->name('records.clamp');
-Route::any('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
-Route::any('/records/{id}/impound', 'RecordsController@impound')->name('records.impound');
-Route::any('/spaces/{id}/reserve','SpacesController@reserve')->name('space.reserve');
-Route::any('reservation','SpacesController@reservation')->name('space.reservation');
-Route::any('/record/{id}/clamp','RecordsController@clamp')->name('records.clamp');
-Route::any('/record/{id}/impound','RecordsController@impound')->name('records.impound');
-Route::any('/record/offender','RecordsController@offender')->name('records.offender');
-Route::any('reserves/create', function()
-{
-	return view('reserves.create');
-})->name('reserves.create');
-Route::post('search', 'SearchesController@search')->name('search');
-Route::get('/spaces/{id}/pdf','SpacesController@export_pdf')->name('spaces.pdf');
-Route::any('pay', function()
-{
-	return view('records.pay');
-})->name('records.pay');
-Route::get('/tasks/{id}/do','TasksController@do')->name('tasks.do');
-
-Route::get('client/{id}/report', 'ClientsController@export_pdf')->name('client.pdf');
-Route::get('client/{id}/chargesheet', 'ClientsController@chargesheet_export_pdf')->name('chargesheet.pdf');
-Route::post('rolespermissions/store','RolesAndPermissionsController@store')->name('rolespermission.store');
-Route::get('rolesandpermissions','RolesAndPermissionsController@index')->name('rolespermission.index');
-Route::get('rolesandpermissions/create','RolesAndPermissionsController@create')->name('rolespermission.create');
-Route::any('reserves/{id}/edit','ReservesController@edit')->name('reserve.edit');
-Route::any('reserves/{id}/update','ReservesController@update')->name('reserve.update');
-Route::any('reserves/{id}/delete','ReservesController@destroy')->name('unreserve');
-Route::resources([
-	'records'=> 'RecordsController',
-	'spaces'=>'SpacesController',
-	'tasks'=>'TasksController',
-	'clients'=>'ClientsController',
-	'crimes'=>'CrimesController'
-	
-
-]);
+	]);
 
 });
 
