@@ -87,6 +87,10 @@ Route::group(['middleware' => 'auth'], function () {
 		
 
 	]);
+	
 
 });
-
+Route :: get('/guest/park','GuestController@park')->name('guest.park');
+Route :: post('/guest/park', 'GuestController@park_save')->name('guest_park.save');
+Route :: get('/guest/request','GuestController@guest_request')->name('guest.request');
+Route :: post('/guest/request', 'GuestController@request_save')->name('guest_request.save');

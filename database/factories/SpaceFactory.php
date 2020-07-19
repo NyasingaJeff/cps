@@ -4,6 +4,7 @@
 
 use App\Space;
 use Faker\Generator as Faker;
+// use DB;
 
 $factory->define(Space::class, function (Faker $faker) {
         $location = $faker->randomElement(['Nakuru','Nairobi','Kisumu','Mombasa']);
@@ -30,6 +31,23 @@ $factory->define(Space::class, function (Faker $faker) {
         $b = str_split($street,2);
         $b= $b[0] ;
         $st_id = $a.$b;
+        $streets = DB::table('spaces')
+                    ->where('location','=', $location)
+                    ->where('street','=',$street)
+                    ->get();
+        $streetcount= count($streets);
+        $x = $streetcount + 1 ;   
+        $a= str_split($location,2);
+        $a= $a[0];
+        $b= str_split($street,2);
+        $b = $b[0];
+        if ($streetcount <= 9) {
+            $st_id = $a.$b. '00'.$x; 
+        } elseif ($streetcount <= 99) {
+            $st_id = $a.$b.'0'.$x; 
+        } else {
+            $st_id = $a.$b.$x; 
+        }   
     return [
         "location"=> $location,
         "street"=> $street,

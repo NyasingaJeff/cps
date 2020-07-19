@@ -17,7 +17,7 @@ class TasksController extends Controller
          * @return \Illuminate\Http\Response
          */
         public function index()
-        {   
+        {   #this is to determion ne if the user is admin,,,, if the user is an admin the user will view all the records else, only the re;levant to the user
             $userlocation =auth()->user()->location;
             $alltasks = Task::all();
             $usertasks=array();

@@ -9,11 +9,15 @@
               <div class="card-header card-header-primary">
                 <h4 class="card-title ">{{ __('Records') }}</h4>
                 <p class="card-category"> {{ __('Here you can manage records') }}</p>
+                
               </div>
               <div class="card-body">
+                                  
+
                 @if (session('status'))
                   <div class="row">
                     <div class="col-sm-12">
+                      
                       <div class="alert alert-success">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                           <i class="material-icons">close</i>
