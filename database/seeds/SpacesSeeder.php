@@ -11,7 +11,7 @@ class SpacesSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Space::class, 50)->create();
+        //factory(\App\Space::class, 50)->create();
 
     }
 }

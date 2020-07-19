@@ -11,7 +11,7 @@ class CrimesSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Crime::class, 50)->create();
+      // factory(\App\Crime::class, 50)->create();
 
     }
 }

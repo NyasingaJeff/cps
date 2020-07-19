@@ -11,7 +11,7 @@ class OffendersSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Offender::class, 50)->create();
+        //factory(\App\Offender::class, 50)->create();
 
     }
 }

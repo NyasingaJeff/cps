@@ -11,7 +11,7 @@ class ReservesSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Reserve::class, 50)->create();
+        //factory(\App\Reserve::class, 50)->create();
 
     }
 }
