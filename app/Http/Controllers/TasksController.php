@@ -18,17 +18,17 @@ class TasksController extends Controller
          */
         public function index()
         {   #this is to determion ne if the user is admin,,,, if the user is an admin the user will view all the records else, only the re;levant to the user
-            $userlocation =auth()->user()->location;
+            $user =auth()->user();
             $alltasks = Task::all();
             $usertasks=array();
-            if ($userlocation=='Admin') {
+            if ($user->hasRole('admin'))  {
                 $tasks= Task::all();
             } else {
                 foreach ($alltasks as $task) {
                     $town=$task->location;
                     $town=explode(",",$town);
                     $town=$town[0];
-                    if ($town==$userlocation) {
+                    if ($town==$user->location) {
                         array_push($usertasks, $task);
                     } else {
                         $tasks='not availale';
@@ -103,15 +103,17 @@ class TasksController extends Controller
             $task->phone= $request->input('phone');
             $task->status=0;
             $task->type=0;
-            if ($request->input('email')->isset()) {
+            if ($request->input('email')->isNotEmpty()) {          
                 $task->email=$request->input('email');
+            }else {
+                $task->email = 'N/A';
             }
             
             $task->token=$request->session()->get('_token');
             $task->save();
             //Uncomment this and the app wiill send mail to the users email if set...
             //Mail::to($task->email)->send(new CancelRequest($task));
-            return redirect('tasks')->withStatus('success','Your Request has been successfully submitted');
+            return redirect('tasks')->with('success','Your Request has been successfully submitted');
     
     
         }
@@ -163,7 +165,7 @@ class TasksController extends Controller
             $task->destination=$request->input('destination');
             $task->phone= $request->input('phone');
             $task->save();
-            return redirect('tasks')->withStatus(__('Task successfully updated.'));
+            return redirect('tasks')->withStatus('info','Task successfully updated.');
             
         }
 
@@ -187,7 +189,7 @@ class TasksController extends Controller
         {
             $task = Task::find($id);
             $task->delete();
-            return redirect('tasks')->with('success', 'Task Deleted');
+            return redirect('tasks')->with('warning', 'Task Deleted');
         }
     
     

@@ -89,7 +89,7 @@ class SpacesController extends Controller
         
     
         $space->save();
-        return redirect('spaces')->with('message','Space Added');
+        return redirect('spaces')->with('success','Space Added');
 
     }
 

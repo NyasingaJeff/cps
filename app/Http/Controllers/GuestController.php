@@ -76,7 +76,7 @@ class GuestController extends Controller
             $task->save();
         }
         
-        return redirect('/')->with('message','Space Booked Succesfully');
+        return redirect('/')->with('success','Space Booked Succesfully');
     }
     public function guest_request()
     {
@@ -131,6 +131,6 @@ class GuestController extends Controller
         $task->save();
         //Uncomment this and the app wiill send mail to the users email if set...
         //Mail::to($task->email)->send(new CancelRequest($task));
-        return redirect('/')->withStatus('success','Your Request has been successfully submitted');
+        return redirect('/')->with('success','Your Request has been successfully submitted');
     }
 }

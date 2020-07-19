@@ -70,13 +70,11 @@
                             {{ $task->location }}
                           </td>
                           @if ($task->type==0)
-                          <td >
-                            
+                          <td >                            
                             {{ $task->destination}} 
                           </td>                              
                           @else
-                          <td class="text-danger" >
-                           
+                          <td class="text-danger" >                        
                             {{ $task->destination}} 
                           </td>
                           @endif

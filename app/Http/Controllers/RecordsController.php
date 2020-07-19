@@ -21,39 +21,20 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        
-        $location = auth()->user()->location;
-        
-        //getting all the spaces under the user/ employee
-        $spaces = \App\Space::where('location', '=' , $location)->get();
-            //get all of the records on offenders
-        $os=\App\Offender::all();
-        //getting thre records  
-        $allrecords =array();
-        $alloffences =array();
-        if ($location=='Admin') {
-            $records = \App\Record::all();
-            $offenders= \App\Offender::all();
+        //admin sees  everything
+        if (auth()->user()->hasRole('admin')) {
+            $records = Record::all();
+            $offenders = Offender::all();
         } else {
-           
-            foreach ($spaces as $space) {
-                $rcd = $space->record;
-                array_push($allrecords,$rcd);
-            }
-            $records=$allrecords[0];
-            //get the offences under this users jurdisiction
-            foreach ($os as $o) {
-               
-                $town=explode("-",$o->location);
-                $town= $town[0];
-                if ($town==$location." ") {
-                    array_push($alloffences,$o);
-                }
-            }
-            $offenders=$alloffences;
-        }  
+           //filter accodingly
+            $offenders = Offender::all()->filter(function($value,$key){
+                return $value->location == auth()->user()->location || explode('-',$value->location)[0] == auth()->user()->location;
+            });
+            $records = Record::all()->filter(function($value,$key){
+                return $value->space->location == auth()->user()->location;
+            });       
+        }
         
-
 
         return view('records.index')->with('records',$records)->with('offenders', $offenders);
     }

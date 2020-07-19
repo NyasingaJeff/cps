@@ -48,7 +48,7 @@ class CrimesController extends Controller
         $crime->fine=$request->input('fine');
         $crime->description=$request->input('description');
         $crime->save();
-        return redirect('crimes');
+        return redirect('crimes')->with('succes','Criime Recorded');
 
     }
 
@@ -96,7 +96,7 @@ class CrimesController extends Controller
         $crime->name=$request->input('name');
         $crime->fine=$request->input('fine');
         $crime->save();
-
+        return redirect('crimes')->with('success','Editted successfully');
     }
 
     /**
@@ -109,6 +109,6 @@ class CrimesController extends Controller
     {
         $crime= Crime::find($id);
         $crime->delete();
-        return redirect('crimes');
+        return redirect('crimes')->with('info','Deleted');
     }
 }

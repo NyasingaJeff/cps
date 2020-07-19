@@ -14,7 +14,6 @@ class Record extends Model
     public function space(){
        return $this->belongsTo('App\Space');
     }
-
     public function user(){
     return $this->belongsTo('App\User');
     }
