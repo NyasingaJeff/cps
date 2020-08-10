@@ -61,7 +61,6 @@
                       <div class="form-group">
                         <select name="location" id="location" style="opacity: 0.5" required>
                         <option value=""> Select location</option>
-                        <option value="Admin"> Admin</option>
                        @foreach ($spaces as $space)
                        <option value="{{ $space}}">{{$space}}</option> 
                        @endforeach 

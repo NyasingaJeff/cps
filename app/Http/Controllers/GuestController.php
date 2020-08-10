@@ -130,7 +130,12 @@ class GuestController extends Controller
         $task->token=$request->session()->get('_token');
         $task->save();
         //Uncomment this and the app wiill send mail to the users email if set...
-        //Mail::to($task->email)->send(new CancelRequest($task));
+        try {
+            Mail::to($task->email)->send(new CancelRequest($task));
+             } catch (\Throwable $th) {
+            //throw $th;
+        }
+        
         return redirect('/')->with('success','Your Request has been successfully submitted');
     }
 }

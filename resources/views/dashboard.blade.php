@@ -1,8 +1,14 @@
+@php
+    $d_pending = array_slice($pending_tasks,0,6);
+    $d_done = array_slice($done_tasks,0,6);
+    $d_criminals= array_slice($criminals,0,6);
+@endphp
 @extends('layouts.app', ['activePage' => 'dashboard', 'titlePage' => __('Dashboard')])
 
 @section('content')
   <div class="content">
     <div class="container-fluid">
+      @can('admin')
       <div class="row">
         <div class="col-lg-3 col-md-6 col-sm-6">
           <div class="card card-stats">
@@ -123,6 +129,8 @@
           </div>
         </div>
       </div>
+      @endcan
+
       <div class="row">
         <div class="col-lg-6 col-md-12">
           <div class="card">
@@ -132,19 +140,19 @@
                   <span class="nav-tabs-title">Tasks:</span>
                   <ul class="nav nav-tabs" data-tabs="tabs">
                     <li class="nav-item">
-                      <a class="nav-link active" href="#profile" data-toggle="tab">
+                      <a class="nav-link active" href="#pending-tasks" data-toggle="tab">
                         <i class="material-icons"></i> Pending Tasks
                         <div class="ripple-container"></div>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#messages" data-toggle="tab">
+                      <a class="nav-link" href="#towed" data-toggle="tab">
                         <i class="material-icons"></i> Towed 
                         <div class="ripple-container"></div>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#settings" data-toggle="tab">
+                      <a class="nav-link" href="#impounded" data-toggle="tab">
                         <i class="material-icons"></i> Imponded
                         <div class="ripple-container"></div>
                       </a>
@@ -155,9 +163,11 @@
             </div>
             <div class="card-body">
               <div class="tab-content">
-                <div class="tab-pane active" id="profile">
+                <div class="tab-pane active" id="pending-tasks">
                   <table class="table">
                     <tbody>
+                     @if (count($d_pending)>0)
+                      @foreach ($d_pending as $task)
                       <tr>
                         <td>
                           <div class="form-check">
@@ -169,7 +179,7 @@
                             </label>
                           </div>
                         </td>
-                        <td>Sign contract for "What are conference organizers afraid of?"</td>
+                        <td>{{$task->no_plate}} Located at : {{$task->location}} </td>
                         <td class="td-actions text-right">
                           <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
                             <i class="material-icons">edit</i>
@@ -178,77 +188,21 @@
                             <i class="material-icons">close</i>
                           </button>
                         </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="" checked>
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
+                      </tr>   
+                      @endforeach
+                    @else
+                       <td><span style="color: purple">No Requests Yet</span> </td> 
+                    @endif
+                      
+                      
                     </tbody>
                   </table>
                 </div>
-                <div class="tab-pane" id="messages">
+                <div class="tab-pane" id="towed">
                   <table class="table">
                     <tbody>
+                      @if (count($d_done)>0)
+                      @foreach ($d_done as $task)
                       <tr>
                         <td>
                           <div class="form-check">
@@ -260,8 +214,7 @@
                             </label>
                           </div>
                         </td>
-                        <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                        </td>
+                        <td>{{$task->no_plate}} Towed From at : {{$task->location}} </td>
                         <td class="td-actions text-right">
                           <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
                             <i class="material-icons">edit</i>
@@ -270,55 +223,19 @@
                             <i class="material-icons">close</i>
                           </button>
                         </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Sign contract for "What are conference organizers afraid of?"</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
+                      </tr>   
+                      @endforeach
+                    @else
+                       <td><span style="color: purple">No Requests Yet</span> </td> 
+                    @endif
                     </tbody>
                   </table>
                 </div>
-                <div class="tab-pane" id="settings">
+                <div class="tab-pane" id="impounded">
                   <table class="table">
                     <tbody>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
+                    @if (count($d_criminals)>0)
+                      @foreach ($d_criminals as $task)
                       <tr>
                         <td>
                           <div class="form-check">
@@ -330,8 +247,7 @@
                             </label>
                           </div>
                         </td>
-                        <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                        </td>
+                        <td>{{$task->no_plate}} Caught at : {{$task->location}} </td>
                         <td class="td-actions text-right">
                           <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
                             <i class="material-icons">edit</i>
@@ -340,28 +256,12 @@
                             <i class="material-icons">close</i>
                           </button>
                         </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="" checked>
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Sign contract for "What are conference organizers afraid of?"</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
+                      </tr>   
+                      @endforeach
+                    @else
+                       <td><span style="color: purple">No Requests Yet</span> </td> 
+                    @endif
+                    
                     </tbody>
                   </table>
                 </div>
@@ -372,42 +272,27 @@
         <div class="col-lg-6 col-md-12">
           <div class="card">
             <div class="card-header card-header-warning">
-              <h4 class="card-title">Employees Stats</h4>
-              <p class="card-category">New employees on 15th September, 2016</p>
+              <h4 class="card-title">Spaces</h4>
+              <p class="card-category">Showing The top earnig parking Spaces</p>
             </div>
             <div class="card-body table-responsive">
               <table class="table table-hover">
                 <thead class="text-warning">
                   <th>ID</th>
-                  <th>Name</th>
-                  <th>Salary</th>
-                  <th>Country</th>
+                  <th>City/Town</th>
+                  <th>Street</th>
+                  <th>Totals</th>
                 </thead>
                 <tbody>
+                  @foreach ($top_earners as $top_earner_id=>$revenue)
                   <tr>
-                    <td>1</td>
-                    <td>Dakota Rice</td>
-                    <td>$36,738</td>
-                    <td>Niger</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Minerva Hooper</td>
-                    <td>$23,789</td>
-                    <td>Curaçao</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Sage Rodriguez</td>
-                    <td>$56,142</td>
-                    <td>Netherlands</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Philip Chaney</td>
-                    <td>$38,735</td>
-                    <td>Korea, South</td>
-                  </tr>
+                    <td>{{$top_earner_id}}</td>
+                    <td>{{$all_spaces[$top_earner_id]->location}}</td>
+                    <td>{{$all_spaces[$top_earner_id]->street}}</td>
+                    <td>KSH: {{$revenue}}</td>
+                  </tr>  
+                  @endforeach
+                 
                 </tbody>
               </table>
             </div>

@@ -26,8 +26,9 @@ class UserController extends Controller
      */
     public function create()
     {
-       $spaces=\App\Space::all()->pluck('location');
-       
+    
+       $spaces=\App\Space::all()->pluck('location')->toArray();
+       $spaces = array_unique($spaces); 
         return view('users.create')->with('spaces',$spaces);
     }
 
@@ -57,7 +58,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {   
-        $spaces=\App\Space::all()->pluck('location');
+        $spaces=\App\Space::all()->pluck('location')->toArray();
+       $spaces = array_unique($spaces); 
         return view('users.edit', compact(['user','spaces']));
     }
 
@@ -81,7 +83,8 @@ class UserController extends Controller
             $request->merge(['password' => Hash::make($request->get('password'))])
                 ->except([$hasPassword ? '' : 'password']
         ));
-
+        $user->location = $request->input('location');
+        $user->save();
         return redirect()->route('user.index')->withStatus(__('User successfully updated.'));
     }
 

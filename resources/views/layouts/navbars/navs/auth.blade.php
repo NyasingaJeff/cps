@@ -1,4 +1,19 @@
 <!-- Navbar -->
+@php
+  
+  $user = auth()->user();
+  if ($user->hasRole('admin')) {
+    # Do Nothing
+  } else {
+    $notifications = $notifications->filter(function($value,$key){
+      return $value->location ==  auth()->user()->location  || explode(',',$value->location)[0] == auth()->user()->location ;
+    });
+    // to display five a time
+  }
+  $not_display = $notifications->slice(0,5);
+
+@endphp
+
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
   <div class="container-fluid">
 
@@ -49,17 +64,26 @@
         <li class="nav-item dropdown">
           <a class="nav-link" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">notifications</i>
-            <span class="notification">5</span>
+              <span class="notification">{{count($notifications)}}</span> 
             <p class="d-lg-none d-md-block">
               {{ __('Some Actions') }}
             </p>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">{{ __('Mike John responded to your email') }}</a>
-            <a class="dropdown-item" href="#">{{ __('You have 5 new tasks') }}</a>
-            <a class="dropdown-item" href="#">{{ __('You\'re now friend with Andrew') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Another Notification') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Another One') }}</a>
+          @foreach ($not_display as $notification)
+          <a class="dropdown-item" href="{{route('tasks.index')}}">
+            {{$notification->no_plate}} 
+             {{$notification->location}} To  : 
+        @if ($notification->type ==1 )
+            <span style="color: red"> {{$notification->destination}}</span>
+        @else
+             {{$notification->destination}}
+        @endif
+          </a>         
+          
+           @endforeach
+          {{-- {{$not_display}} --}}
+            
           </div>
         </li>
         <li class="nav-item dropdown">
@@ -80,3 +104,4 @@
     
   </div>
 </nav>
+

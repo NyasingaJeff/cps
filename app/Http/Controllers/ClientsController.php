@@ -103,6 +103,28 @@ class ClientsController extends Controller
         $pdf = \PDF::loadView('clients.chargesheet',compact(['client','offences','totalFines']));
         return $pdf->download($client->no_plate.'-CHARGSHEET:'.date("d.m.Y.H.i.s").'.pdf');
      }
+    public function pay($id) #this will not only drop all charges it wil delete the charges
+    {
+        #Get the client
+        $client= clients::find($id);
+        #Get the Records
+        $fines=[];
+        $offences= \App\Offender::where('no_plate',$client->no_plate);
+        foreach ($offences as $offence) {
+            if ($offence->trashed) {
+                
+            } else {
+                array_push($fines,$offence->fine_due);
+            }           
+           
+        }
+        $totalFines=array_sum($fines);
+        $offences->delete();
+        #Recieve payment
+        $pdf = \PDF::loadView('clients.chargesheet',compact(['client','offences','totalFines']));
+        return $pdf->download($client->no_plate.'-CHARGSHEET:'.date("d.m.Y.H.i.s").'.pdf');
+
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -137,6 +159,7 @@ class ClientsController extends Controller
      */
     public function destroy($id)
     {
-         //clients are automatically deleted by the system.. :)
+        $client = clients::find($id);
+        $client->delete();
     }
 }

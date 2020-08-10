@@ -18,35 +18,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
-Route::group(['middleware' => 'auth'], function () {
-	Route::get('table-list', function () {
-		return view('pages.table_list');
-	})->name('table');
 
-	Route::get('typography', function () {
-		return view('pages.typography');
-	})->name('typography');
-
-	Route::get('icons', function () {
-		return view('pages.icons');
-	})->name('icons');
-
-	Route::get('map', function () {
-		return view('pages.map');
-	})->name('map');
-
-	Route::get('notifications', function () {
-		return view('pages.notifications');
-	})->name('notifications');
-
-	Route::get('rtl-support', function () {
-		return view('pages.language');
-	})->name('language');
-
-	Route::get('upgrade', function () {
-		return view('pages.upgrade');
-	})->name('upgrade');
-});
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'UserController', ['except' => ['show']]);
@@ -78,6 +50,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::any('reserves/{id}/edit','ReservesController@edit')->name('reserve.edit');
 	Route::any('reserves/{id}/update','ReservesController@update')->name('reserve.update');
 	Route::any('reserves/{id}/delete','ReservesController@destroy')->name('unreserve');
+	Route::get('clients/{id}/pay','ClientsController@pay')->name('pay');
 	Route::resources([
 		'records'=> 'RecordsController',
 		'spaces'=>'SpacesController',
@@ -94,3 +67,10 @@ Route :: get('/guest/park','GuestController@park')->name('guest.park');
 Route :: post('/guest/park', 'GuestController@park_save')->name('guest_park.save');
 Route :: get('/guest/request','GuestController@guest_request')->name('guest.request');
 Route :: post('/guest/request', 'GuestController@request_save')->name('guest_request.save');
+
+#this is to share data across all views
+
+View::composer(['*'],function($view){
+	$notifications = App\Task::where('status','=',0)->get();
+	$view->with('notifications',$notifications);
+});

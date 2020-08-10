@@ -53,8 +53,8 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8mb4_unicode_ci',
+            'charset' => 'utf8mb4', #set of symbols and encoding
+            'collation' => 'utf8mb4_unicode_ci',#the rules that will be used to encode the symbols to their encodes
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,

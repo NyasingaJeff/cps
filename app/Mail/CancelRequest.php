@@ -31,8 +31,13 @@ class CancelRequest extends Mailable
      */
     public function build()
     {
-        return $this->from('scholarscarpak@gmail.com')
-                    ->subject('CPS link')
-                    ->markdown('mail.canceltask')->with(['task' => $this->task]);
+        #here is where we capture that errror
+        
+            return $this->from('scholarscarpak@gmail.com')
+            ->subject('CPS link')
+            ->markdown('mail.canceltask')->with(['task' => $this->task]);
+       
+        
+       
     }
 }

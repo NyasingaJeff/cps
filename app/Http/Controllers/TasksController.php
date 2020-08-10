@@ -17,12 +17,12 @@ class TasksController extends Controller
          * @return \Illuminate\Http\Response
          */
         public function index()
-        {   #this is to determion ne if the user is admin,,,, if the user is an admin the user will view all the records else, only the re;levant to the user
+        {               #this is to determion ne if the user is admin,,,, if the user is an admin the user will view all the records else, only the re;levant to the user
             $user =auth()->user();
-            $alltasks = Task::all();
+            $alltasks = Task::where('status',0)->get();
             $usertasks=array();
             if ($user->hasRole('admin'))  {
-                $tasks= Task::all();
+                $tasks= $alltasks;
             } else {
                 foreach ($alltasks as $task) {
                     $town=$task->location;
@@ -31,7 +31,7 @@ class TasksController extends Controller
                     if ($town==$user->location) {
                         array_push($usertasks, $task);
                     } else {
-                        $tasks='not availale';
+                        $tasks='Not available';
                     }
                     
             }
@@ -94,25 +94,29 @@ class TasksController extends Controller
                 );
             
    
-            //This is the one generated when a guest log in... must find a user generated.... when c;<amped class=""></amped>
+            //This is the one generated when a Attendant has  log in... must find a user generated.... when c;<amped class=""></amped>
             $task= new Task;
-            $task->no_plate =  $plate;
+            $task->no_plate = strtoupper($plate);
             $task->name= $request->input('name');
             $task->location = $actuallocation;
             $task->destination = $request->input('destination');
             $task->phone= $request->input('phone');
             $task->status=0;
             $task->type=0;
-            if ($request->input('email')->isNotEmpty()) {          
+            if(!!($request->input('email'))) {          
                 $task->email=$request->input('email');
             }else {
                 $task->email = 'N/A';
             }
-            
             $task->token=$request->session()->get('_token');
             $task->save();
-            //Uncomment this and the app wiill send mail to the users email if set...
-            //Mail::to($task->email)->send(new CancelRequest($task));
+
+            try {
+                Mail::to($task->email)->send(new CancelRequest($task));
+            } catch (\Throwable $th) {
+                // throw $th;
+            }
+            
             return redirect('tasks')->with('success','Your Request has been successfully submitted');
     
     
@@ -176,7 +180,7 @@ class TasksController extends Controller
             $task =Task::find($id);
             $task->status = 1;
             $task->save();
-            return redirect('tasks');
+            return redirect('tasks')->with('info','Records Updated');
         }
     
         /**

@@ -34,7 +34,7 @@ class RecordsController extends Controller
                 return $value->space->location == auth()->user()->location;
             });       
         }
-        
+        // $notifications= notifications_generator();
 
         return view('records.index')->with('records',$records)->with('offenders', $offenders);
     }
@@ -67,7 +67,7 @@ class RecordsController extends Controller
             'space_id'=>'required',
             'phone'=>'required|max:12|min:10'
         ]);
-
+        //  to make the plate.. merge the fields
         $preffix= $request->input('preffix'); 
         $numeric=$request->input('numeric');
         $suffix=$request->input('suffix');   
@@ -102,6 +102,7 @@ class RecordsController extends Controller
         // we first query the offenders table
         $pending = DB::table('offenders')
                     ->where('no_plate','=',$record->no_plate)
+                    ->where('status','=',1)
                     ->get();
         // isset() checks if the query above actually returned records
         if (isset($pending)) {
@@ -203,9 +204,7 @@ class RecordsController extends Controller
     public function offender( Request $request){           
         
         $records= Record::all();
-
-
-        $offender = new \App\Offender;;
+        $offender = new \App\Offender;
         $offender->no_plate= $request->input('no_plate');
         $town= $request->town;
         $street=$request->street;
@@ -228,7 +227,7 @@ class RecordsController extends Controller
             $fine = \App\Crime::find($request->input('crime'));
             $fine_due = $fine->fine;
         } 
-        
+        return redirect('records')->with('info','Clamped!!!!') ;  
     
         
            
@@ -261,7 +260,7 @@ class RecordsController extends Controller
         $offender= \App\Offender::find($id);
         $offender->status =1;
         $offender->save();
-        return redirect('records');
+        return redirect('records')->with('info','Impounded');
     }
    
     // The funnction is for imoounding cars

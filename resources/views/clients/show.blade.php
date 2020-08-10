@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md-12">
             <div>
-                <span class="text-primary">PLATE:</span><span>{{$client->no_plate}}</span></br><span class="text-primary">OWNER:</span><span>{{$client->name}}</span>,<span>{{$client->phone}}.{{$client->email}}</span>
+                <span class="text-primary">PLATE:</span><span>{{$client->no_plate}}</span></br><span class="text-primary">OWNER:</span><span>{{$client->name}}</span> , <span>{{$client->phone}} . {{$client->email}}</span>
 
                
             </div>
@@ -97,6 +97,7 @@
         </div>
         <div class="col-md-12">
         <div class="col-12 text-right">
+                    <a href="{{ route('pay',$client) }}" class="btn btn-sm btn-success">{{ __('Pay') }}</a>
                     <a href="{{ route('chargesheet.pdf',$client) }}" class="btn btn-sm btn-danger">{{ __('Download Chargsheet') }}</a>
                   </div>
             <div class="card">

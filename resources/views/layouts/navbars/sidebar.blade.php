@@ -101,7 +101,7 @@
             <li class="nav-item{{ $activePage == 'tasks-create' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('tasks.create') }}">
                 <span class="sidebar-mini"> RT </span>
-                <span class="sidebar-normal"> {{ __('Request Tow') }} </span>
+                <span class="sidebar-normal"> {{ __('Tow A Client') }} </span>
               </a>
             </li>
             <li class="nav-item{{ $activePage == ('tasks-index' )? ' active' : '' }}">
