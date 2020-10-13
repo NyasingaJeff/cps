@@ -21,6 +21,6 @@ class Record extends Model
 
     public function client(){
         return $this->belongsTo('App\clients','no_plate','no_plate' );
-        }
+    }
 
 }

@@ -53,7 +53,7 @@
                             {{ $email}}
                           </td>
                           
-                          <td class="td-actions text-right">
+                        <td class="td-actions text-right">
 
                             <div class="dropdown">
                               <a class="btn btn-sm btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,7 +70,7 @@
                                   </button>
                                  </form>                                                                                                  
                              </div>
-                        </div>                        
+                          </div>                        
                         </td>                       
                         </tr>
                     
