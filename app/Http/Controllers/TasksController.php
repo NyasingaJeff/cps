@@ -64,6 +64,7 @@ class TasksController extends Controller
          */
         public function store(Request $request)
         {
+            // return $request;
             $this->validate($request,[
                 'name'=>'required',
                 'phone'=>'required|max:12|min:10',
@@ -113,8 +114,8 @@ class TasksController extends Controller
 
             try {
                 Mail::to($task->email)->send(new CancelRequest($task));
-            } catch (\Throwable $th) {
-                // throw $th;
+            } catch (Throwable $th) {
+                throw $th;
             }
             
             return redirect('tasks')->with('success','Your Request has been successfully submitted');

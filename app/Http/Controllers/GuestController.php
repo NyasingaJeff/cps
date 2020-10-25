@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Mail;
+use App\Mail\CancelRequest;
 
 class GuestController extends Controller
 {
@@ -131,10 +132,11 @@ class GuestController extends Controller
         $task->save();
         //Uncomment this and the app wiill send mail to the users email if set...
         try {
-            Mail::to($task->email)->send(new CancelRequest($task));
-             } catch (\Throwable $th) {
-            //throw $th;
+            Mail::to($request->email)->send(new CancelRequest($task));
+        } catch (\Throwable $th) {
+            throw $th;
         }
+
         
         return redirect('/')->with('success','Your Request has been successfully submitted');
     }
