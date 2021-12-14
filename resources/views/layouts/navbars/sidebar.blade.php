@@ -6,7 +6,7 @@
   -->
   <div class="logo">
   <a href="{{route('home')}}" class="simple-text logo-normal">
-      {{ __('Car Parking System') }}
+      {{ __('cars packing system') }}
     </a>
   </div>
   <div class="sidebar-wrapper">
