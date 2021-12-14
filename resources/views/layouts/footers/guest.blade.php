@@ -8,7 +8,7 @@
       <script>
         document.write(new Date().getFullYear())
       </script>, made with <i class="material-icons">favorite</i> by
-      <a href="#" target="">S.BIKERI</a> ..... <a href="home" target="">CPS</a> for a better Expirience.
+      <a href="#" target="">Gad Swakei</a> ..... <a href="home" target="">CPS</a> for a better Expirience.
     </div>
   </div>
 </footer>
